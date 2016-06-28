@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
-using System.Web.DynamicData;
 
-namespace AppFeedBack.Models
+namespace AppFeedBack.Domain.Entities
 {
-    [TableName("Feedbacks")]
     public class Feedback
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         public string UserName { get; set; }
@@ -23,6 +22,9 @@ namespace AppFeedBack.Models
 
         public DateTime PostDate { get; set; }
 
+        public Guid CategoryId { get; set; }
+
+        [ForeignKey("CategoryId")]
         public virtual Category Category { get; set; }
     }
 }

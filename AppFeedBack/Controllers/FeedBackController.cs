@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using AppFeedBack.Models;
+using AppFeedBack.Domain;
+using AppFeedBack.Domain.Entities;
 using AppFeedBack.ViewModels;
 
 namespace AppFeedBack.Controllers
@@ -15,11 +17,11 @@ namespace AppFeedBack.Controllers
         public FeedbackContext db = new FeedbackContext();
 
         [HttpGet]
-        public ActionResult CreateFeedback()
+        public async Task<ActionResult> CreateFeedback()
         {
             var model = new FeedbackViewModel
             {
-                Categories = GetCategories()
+                Categories = await GetCategories()
             };
 
             return View(model);
@@ -30,7 +32,7 @@ namespace AppFeedBack.Controllers
         {
             if (!ModelState.IsValid)
             {
-                model.Categories = GetCategories();
+                model.Categories = await GetCategories();
                 return View("CreateFeedback", model);
             }
 
@@ -45,34 +47,34 @@ namespace AppFeedBack.Controllers
                 FilePath = path
             };
 
-            db.Feedbacks.Add(feedback);
-
-            try
+            using (var db = new FeedbackContext())
             {
-                await db.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
+                db.Feedbacks.Add(feedback);
+                try
+                {
+                    await db.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
 
+                }
             }
             
             return View("Success");
         }
 
-        private List<SelectListItem> GetCategories(int idSelected = 0)
+        private async Task<List<SelectListItem>> GetCategories()
         {
-            var categories = db.Categories.Select(t => new SelectListItem
+            var categories = await db.Categories.Select(t => new SelectListItem
             {
                 Text = t.Name,
-                Value = t.Id.ToString(),
-                Selected =  t.Id == idSelected
-            }).ToList();
+                Value = t.Id.ToString()
+            }).ToListAsync();
 
             categories.Add(new SelectListItem
             {
                 Text = "Не выбрана",
-                Value = "0",
-                Selected = idSelected <= 0
+                Value = "0"
             });
 
             return categories;

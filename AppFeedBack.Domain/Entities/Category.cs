@@ -4,26 +4,30 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
-using System.Web.DynamicData;
 
-namespace AppFeedBack.Models
+
+namespace AppFeedBack.Domain.Entities
 {
-   [TableName("Categories")]
+   
     public class Category
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
+        /// <summary>
+        /// Название категории
+        /// </summary>
         [Required]
+        [Display(Name="Название категории")]
         public string Name { get; set; }
 
         public bool IsActive { get; set; }
 
         public virtual ICollection<Feedback> Feedbacks { get; set; }
 
-       public Category()
-       {
-           Feedbacks = new List<Feedback>();
-       }
+        public Category()
+        {
+            Feedbacks = new List<Feedback>();
+        }
     }
 }
