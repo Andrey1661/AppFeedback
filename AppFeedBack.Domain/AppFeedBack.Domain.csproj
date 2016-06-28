@@ -52,12 +52,30 @@
   <ItemGroup>
     <Compile Include="Entities\Category.cs" />
     <Compile Include="Entities\Feedback.cs" />
+    <Compile Include="Entities\FeedBackFile.cs" />
     <Compile Include="FeedbackContext.cs" />
+    <Compile Include="Migrations\201606280419106_Refactor.cs" />
+    <Compile Include="Migrations\201606280419106_Refactor.Designer.cs">
+      <DependentUpon>201606280419106_Refactor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201606280700301_FeedbackFileTable.cs" />
+    <Compile Include="Migrations\201606280700301_FeedbackFileTable.Designer.cs">
+      <DependentUpon>201606280700301_FeedbackFileTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201606280419106_Refactor.resx">
+      <DependentUpon>201606280419106_Refactor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606280700301_FeedbackFileTable.resx">
+      <DependentUpon>201606280700301_FeedbackFileTable.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

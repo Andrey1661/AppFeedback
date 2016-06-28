@@ -39,10 +39,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework.SqlServer">
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
@@ -122,22 +124,17 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201606270739391_InitialCreate.cs" />
-    <Compile Include="Migrations\201606270739391_InitialCreate.Designer.cs">
-      <DependentUpon>201606270739391_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201606270744522_FeedbacksDateTime.cs" />
-    <Compile Include="Migrations\201606270744522_FeedbacksDateTime.Designer.cs">
-      <DependentUpon>201606270744522_FeedbacksDateTime.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\FeedbackViewModel.cs" />
+    <Compile Include="ViewModels\FeedbackDisplayViewModel.cs" />
+    <Compile Include="ViewModels\FeedbackListViewModel.cs" />
+    <Compile Include="ViewModels\FeedbackCreateViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Icons\file-icon.png" />
     <Content Include="Content\Style-Form.css" />
+    <Content Include="Content\Style-ViewFeedbacks.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -170,8 +167,9 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
-    <Content Include="Views\FeedBack\CreateFeedback.cshtml" />
+    <Content Include="Views\FeedBack\StoreFeedback.cshtml" />
     <Content Include="Views\FeedBack\Success.cshtml" />
+    <Content Include="Views\FeedBack\ViewFeedbacks.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -183,14 +181,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201606270739391_InitialCreate.resx">
-      <DependentUpon>201606270739391_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201606270744522_FeedbacksDateTime.resx">
-      <DependentUpon>201606270744522_FeedbacksDateTime.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />

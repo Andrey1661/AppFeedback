@@ -10,6 +10,7 @@ namespace AppFeedBack.Domain.Entities
     public class Feedback
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
         [Required]
@@ -22,9 +23,16 @@ namespace AppFeedBack.Domain.Entities
 
         public DateTime PostDate { get; set; }
 
+        [ForeignKey("Category")]
         public Guid CategoryId { get; set; }
 
-        [ForeignKey("CategoryId")]
         public virtual Category Category { get; set; }
+
+        public virtual ICollection<FeedBackFile> AttachedFiles { get; set; }
+
+        public Feedback()
+        {
+            AttachedFiles = new List<FeedBackFile>();
+        }
     }
 }

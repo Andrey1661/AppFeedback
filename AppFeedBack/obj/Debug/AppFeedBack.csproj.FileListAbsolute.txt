@@ -35,9 +35,6 @@ c:\users\андрей\documents\visual studio 2013\Projects\AppFeedBack\AppFeedB
 c:\users\андрей\documents\visual studio 2013\Projects\AppFeedBack\AppFeedBack\bin\EntityFramework.SqlServer.dll
 c:\users\андрей\documents\visual studio 2013\Projects\AppFeedBack\AppFeedBack\bin\EntityFramework.xml
 c:\users\андрей\documents\visual studio 2013\Projects\AppFeedBack\AppFeedBack\bin\EntityFramework.SqlServer.xml
-c:\users\андрей\documents\visual studio 2013\Projects\AppFeedBack\AppFeedBack\obj\Debug\AppFeedBack.Migrations.InitialCreate.resources
-c:\users\андрей\documents\visual studio 2013\Projects\AppFeedBack\AppFeedBack\obj\Debug\AppFeedBack.csproj.GenerateResource.Cache
-c:\users\андрей\documents\visual studio 2013\Projects\AppFeedBack\AppFeedBack\obj\Debug\AppFeedBack.Migrations.FeedbacksDateTime.resources
 C:\Users\dlplotnikov.ROSNEFT\Documents\Visual Studio 2015\Projects\student\AppFeedback\AppFeedBack\bin\AppFeedBack.dll.config
 C:\Users\dlplotnikov.ROSNEFT\Documents\Visual Studio 2015\Projects\student\AppFeedback\AppFeedBack\bin\AppFeedBack.dll
 C:\Users\dlplotnikov.ROSNEFT\Documents\Visual Studio 2015\Projects\student\AppFeedback\AppFeedBack\bin\AppFeedBack.pdb
@@ -78,3 +75,5 @@ C:\Users\dlplotnikov.ROSNEFT\Documents\Visual Studio 2015\Projects\student\AppFe
 C:\Users\dlplotnikov.ROSNEFT\Documents\Visual Studio 2015\Projects\student\AppFeedback\AppFeedBack\obj\Debug\AppFeedBack.csproj.GenerateResource.Cache
 C:\Users\dlplotnikov.ROSNEFT\Documents\Visual Studio 2015\Projects\student\AppFeedback\AppFeedBack\obj\Debug\AppFeedBack.dll
 C:\Users\dlplotnikov.ROSNEFT\Documents\Visual Studio 2015\Projects\student\AppFeedback\AppFeedBack\obj\Debug\AppFeedBack.pdb
+C:\Users\Андрей\documents\visual studio 2013\Projects\AppFeedBack\AppFeedBack\bin\AppFeedBack.Domain.dll
+C:\Users\Андрей\documents\visual studio 2013\Projects\AppFeedBack\AppFeedBack\bin\AppFeedBack.Domain.pdb

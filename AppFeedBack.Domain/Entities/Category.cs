@@ -12,6 +12,7 @@ namespace AppFeedBack.Domain.Entities
     public class Category
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
         /// <summary>

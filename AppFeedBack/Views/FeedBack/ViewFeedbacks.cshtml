@@ -1,0 +1,47 @@
+﻿@model ICollection<AppFeedBack.ViewModels.FeedbackDisplayViewModel>
+
+<h2>Ваши отзывы</h2>
+
+<div class="row">
+
+    <div class="col-md-6">
+
+        <div class="feedback-wrapper">
+
+            @if (Model != null && Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                    <div class="feedback-block">
+
+                        <div class="feedback-header">
+                            @Html.LabelFor(t => item.Category)
+                            @Html.DisplayFor(t => item.Category)
+                        </div>
+
+                        <div class="feedback-main">
+                            @Html.DisplayTextFor(t => item.Text)
+                        </div>
+
+                        <div class="feedback-footer">
+                            @Html.ActionLink("Редактировать", "StoreFeedback", "FeedBack", new { id = item.Id }, new { @class = "btn btn-link" })
+                        </div>
+
+                    </div>
+                }
+            }
+
+        </div> 
+
+        <div class="panel-footer">
+
+            @Html.ActionLink("Написать отзыв", "StoreFeedback", "FeedBack", null, new {@class = "btn btn-default"})
+
+        </div>
+
+    </div>
+
+</div>
+
+
+

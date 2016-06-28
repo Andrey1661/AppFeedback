@@ -1,37 +1,4 @@
 ﻿
-.input-box {
-    display: block;
-    position: relative;
-    overflow: hidden;
-    font-size: 1em;
-    height: 2em;
-    line-height: 2em
-}
-
-.input-box .input-btn, .input-box > mark {
-    display: block;
-    cursor: pointer;
-}
-
-.input-box .input-btn {
-    float: left;
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    width: 8em;
-    height: 100%;
-    text-align: center;
-}
-
-.input-box > mark {
-    padding-left: 1em 
-}
-
-.input-box input[type=file]{
-    position: absolute;
-    top: 0;
-    opacity: 0
-}
-
 textarea {
     min-width: 800px;
     min-height: 100px;

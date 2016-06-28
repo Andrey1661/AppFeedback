@@ -14,100 +14,123 @@ namespace AppFeedBack.Controllers
 {
     public class FeedBackController : Controller
     {
-        public FeedbackContext db = new FeedbackContext();
-
-        [HttpGet]
-        public async Task<ActionResult> CreateFeedback()
+        public async Task<ActionResult> ViewFeedbacks()
         {
-            var model = new FeedbackViewModel
+            string userName = string.IsNullOrWhiteSpace(User.Identity.Name) ? "Default" : User.Identity.Name;
+
+            using (var db = new FeedbackContext())
+            {
+                var model = await db.Feedbacks.Where(t => t.UserName == userName).Select(t => new FeedbackDisplayViewModel
+                {
+                    Text = t.Text,
+                    Author = t.UserName,
+                    Category = t.Category.Name,
+                    Id = t.Id
+                }).ToListAsync();
+
+                return View(model);
+            }
+        }
+
+        public async Task<ActionResult> StoreFeedback(Guid? id)
+        {
+            var model = new FeedbackCreateViewModel
             {
                 Categories = await GetCategories()
             };
+
+            if (id != null)
+            {
+                using (var db = new FeedbackContext())
+                {
+                    var feedback = await db.Feedbacks.FirstOrDefaultAsync(t => t.Id == (Guid) id);
+                    model.Id = id;
+                    model.Text = feedback.Text;
+                    model.Category = feedback.Category.Id;
+                }
+            }
 
             return View(model);
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateFeedback(FeedbackViewModel model)
+        public async Task<ActionResult> StoreFeedback(FeedbackCreateViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 model.Categories = await GetCategories();
-                return View("CreateFeedback", model);
+                return View(model);
             }
 
-            string user = string.IsNullOrWhiteSpace(User.Identity.Name) ? "Default" : User.Identity.Name;
-            string path = SaveUploadedFile(model.File);
-
-            var feedback = new Feedback
+            using (var db = new FeedbackContext())
             {
-                Text = model.Text,
-                UserName = user,
-                PostDate = DateTime.Now,
-                FilePath = path
+                var feedback = await db.Feedbacks.FindAsync(model.Id) ?? new Feedback();
+                //feedback.UserName = User.Identity.Name;
+                feedback.UserName = "Default";
+                feedback.Text = model.Text;
+                feedback.PostDate = DateTime.Now;
+                feedback.CategoryId = model.Category;
+
+                var files = SaveUploadedFiles(model.Files);
+                feedback.AttachedFiles = files.Select(file => new FeedBackFile
+                {
+                    FilePath = file
+                }).ToList();
+
+                if (feedback.Id == Guid.Empty)
+                {
+                    db.Feedbacks.Add(feedback);
+                }
+                else
+                {
+                    db.Entry(feedback).State = EntityState.Modified;
+                }
+
+                await db.SaveChangesAsync();
+            }
+
+            return RedirectToAction("ViewFeedbacks");
+        }
+
+        private async Task<List<CategoryViewModel>> GetCategories()
+        {
+            var categories = new List<CategoryViewModel>
+            {
+                new CategoryViewModel{Id = Guid.Empty, Name = "Не выбрана"}
             };
 
             using (var db = new FeedbackContext())
             {
-                db.Feedbacks.Add(feedback);
-                try
-                {
-                    await db.SaveChangesAsync();
-                }
-                catch (Exception ex)
-                {
-
-                }
+                categories.AddRange(
+                    await db.Categories.Select(t => new CategoryViewModel { Id = t.Id, Name = t.Name }).ToListAsync());
             }
             
-            return View("Success");
-        }
-
-        private async Task<List<SelectListItem>> GetCategories()
-        {
-            var categories = await db.Categories.Select(t => new SelectListItem
-            {
-                Text = t.Name,
-                Value = t.Id.ToString()
-            }).ToListAsync();
-
-            categories.Add(new SelectListItem
-            {
-                Text = "Не выбрана",
-                Value = "0"
-            });
-
             return categories;
         }
 
-        private string SaveUploadedFile(HttpPostedFileBase file)
+        private ICollection<string> SaveUploadedFiles(ICollection<HttpPostedFileBase> files)
         {
-            if (file == null || file.ContentLength == 0) return null;
+            if (files == null || !files.Any()) return new List<string>();
 
-            string name = string.Format("{0}_{1}", DateTime.Now.ToString("g").Replace(":", "."), Path.GetFileName(file.FileName).Replace("_", "-"));
-            //string path = Server.MapPath(string.Format(@"\Files\{0}\", User.Identity.Name));
-            string path = Server.MapPath(@"Files\Default\");
+            //string user = User.Identity.Name;
+            string user = "Default";
+            var id = Guid.NewGuid().ToString();
+            string path = Server.MapPath(string.Format("~/Uploads/{0}/{1}/", user, id));
 
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
             }
 
-            string fullName = path + name;
+            var fileNames = new List<string>();
 
-            file.SaveAs(fullName); 
-
-            return fullName;
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
+            foreach (var file in files)
             {
-                db.Dispose();
+                fileNames.Add(Path.Combine(path, Path.GetFileName(file.FileName)));
+                file.SaveAs(fileNames.Last());
             }
 
-            base.Dispose(disposing);
+            return fileNames;
         }
     }
 }

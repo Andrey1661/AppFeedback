@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Web;
+﻿using System.Data.Entity;
 using AppFeedBack.Domain.Entities;
 
 namespace AppFeedBack.Domain
@@ -19,6 +15,12 @@ namespace AppFeedBack.Domain
                 .HasMany(x => x.Feedbacks)
                 .WithRequired(x => x.Category)
                 .HasForeignKey(x => x.CategoryId)
+                .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<Feedback>()
+                .HasMany(t => t.AttachedFiles)
+                .WithRequired(t => t.Feedback)
+                .HasForeignKey(t => t.FeedbackId)
                 .WillCascadeOnDelete(true);
         }
     }
