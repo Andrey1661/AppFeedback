@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BL\FeedbackManager.cs" />
     <Compile Include="Entities\Category.cs" />
     <Compile Include="Entities\Feedback.cs" />
     <Compile Include="Entities\FeedBackFile.cs" />
@@ -61,6 +62,10 @@
     <Compile Include="Migrations\201606280700301_FeedbackFileTable.cs" />
     <Compile Include="Migrations\201606280700301_FeedbackFileTable.Designer.cs">
       <DependentUpon>201606280700301_FeedbackFileTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201606290724380_FeedbackFilePathPropRemove.cs" />
+    <Compile Include="Migrations\201606290724380_FeedbackFilePathPropRemove.Designer.cs">
+      <DependentUpon>201606290724380_FeedbackFilePathPropRemove.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -75,6 +80,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201606280700301_FeedbackFileTable.resx">
       <DependentUpon>201606280700301_FeedbackFileTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606290724380_FeedbackFilePathPropRemove.resx">
+      <DependentUpon>201606290724380_FeedbackFilePathPropRemove.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

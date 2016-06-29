@@ -8,7 +8,9 @@ using System.Web;
 
 namespace AppFeedBack.Domain.Entities
 {
-   
+    /// <summary>
+    /// Модель данных категорий
+    /// </summary>
     public class Category
     {
         [Key]
@@ -22,8 +24,14 @@ namespace AppFeedBack.Domain.Entities
         [Display(Name="Название категории")]
         public string Name { get; set; }
 
+        /// <summary>
+        /// Показывает, активна ли категория
+        /// </summary>
         public bool IsActive { get; set; }
 
+        /// <summary>
+        /// Сссылка на отзывы, относящиеся к данной категории
+        /// </summary>
         public virtual ICollection<Feedback> Feedbacks { get; set; }
 
         public Category()

@@ -1,16 +1,22 @@
-﻿@using AppFeedBack.ViewModels
+﻿@using System.Web.Configuration
+@using AppFeedBack.ViewModels
 @model FeedbackCreateViewModel
 
+<script type="text/javascript" src="~/Scripts/Feedback/FeedbackCreate.js"></script>
+
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-8">
         @using (Html.BeginForm("StoreFeedback", "FeedBack", FormMethod.Post, new {enctype = "multipart/form-data"}))
         {
             <h2>Оставьте отзыв</h2>
 
             <div class="form-horizontal">
 
+                @Html.ValidationSummary(true)
+
                 <div class="form-group">
-                    @Html.TextAreaFor(t => t.Text)
+                    @Html.TextAreaFor(t => t.Text, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(t => t.Text, "", new { @class = "text-danger" })
                 </div>
 
                 <div class="form-group">
@@ -28,6 +34,7 @@
                         var selectList = from item in Model.Categories select new SelectListItem {Value = item.Id.ToString(), Text = item.Name};
                     }
                     @Html.DropDownListFor(t => Model.Category, selectList, new {@class = "form-control"})
+                    @Html.ValidationMessageFor(t => t.Category, "", new { @class = "text-danger" })
                 </div>
 
                 <div class="form-group">
@@ -38,59 +45,6 @@
         }
     </div>
 </div>
-
-<script>
-
-    var fileIndex = 0;
-
-    $(document).ready(function() {
-
-        $("#attachFile").click(function(event) {
-
-            event.preventDefault();
-            var input = $("<input>");
-            var box = $("#input-container");
-            var inputs = $("#input-container input[type=file]");
-
-            for (var i = 0; i < inputs.length; i++) {
-                if (inputs[i].files.length == 0) {
-                    inputs[i].remove();
-                    fileIndex--;
-                }
-            }
-
-            input.attr('name', "Files[" + fileIndex + "]");
-            input.attr('type', 'file');
-            input.css = "display: none";
-
-            input.change(function() {
-                box.append(input);
-                fileIndex++;
-                addFilePreview($(this).prop('files')[0]);
-            });
-
-            input.click();
-           
-        });
-    });
-
-    function addFilePreview(file) {
-
-        var container = $("#preview-container");
-        var block = $("<div>");
-        var label = $("<span>");
-        var image = $("<img>");
-
-        image.css("width", 30);
-        image.attr("src", "@Url.Content("~/Content/Icons/file-icon.png")");
-        label.text(file.name);
-
-        block.append(image);
-        block.append(label);
-        container.append(block);
-    }
-
-</script>
 
 
 

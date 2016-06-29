@@ -15,8 +15,14 @@ namespace AppFeedBack
 
             routes.MapRoute(
                 name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "FeedBack", action = "ViewFeedbacks", id = UrlParameter.Optional }
+                url: "{controller}/{action}/",
+                defaults: new { controller = "FeedBack", action = "ViewFeedbacks" }
+            );
+
+            routes.MapRoute(
+                name: "Create",
+                url: "Feedback/Create/",
+                defaults: new { controller = "FeedBack", action = "StoreFeedbacks", id = UrlParameter.Optional }
             );
         }
     }
