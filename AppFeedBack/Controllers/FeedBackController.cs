@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 using AppFeedBack.Domain;
-using AppFeedBack.Domain.Entities;
 using AppFeedBack.Utils;
 using AppFeedBack.ViewModels;
+using PagedList;
 
 namespace AppFeedBack.Controllers
 {
@@ -19,24 +16,17 @@ namespace AppFeedBack.Controllers
         /// Возвращает представление со списком отзывов пользователей
         /// </summary>
         /// <returns></returns>
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> ViewFeedbacks()
+        public async Task<ActionResult> ViewFeedbacks(FeedbackIndexViewModel model)
         {
-            string userName = string.IsNullOrWhiteSpace(User.Identity.Name) ? "Default" : User.Identity.Name;
+            model = model ?? new FeedbackIndexViewModel();
 
-            using (var db = new FeedbackContext())
-            {
-                var model =
-                    await db.Feedbacks.Where(t => t.UserName == userName).Select(t => new FeedbackDisplayViewModel
-                    {
-                        Text = t.Text,
-                        Author = t.UserName,
-                        Category = t.Category.Name,
-                        Id = t.Id
-                    }).ToListAsync();
+            int pageNum = model.Page ?? 1;
+            int pageSize = 3;
 
-                return View(model);
-            }
+            model.Categories = (await DbManager.GetCategories()).Select(t => t.Name);
+            model.Feedbacks = (await DbManager.GetFeedbacks(model.AuthorFilter, model.Category)).ToPagedList(pageNum, pageSize);
+
+            return View(model);
         }
 
         /// <summary>

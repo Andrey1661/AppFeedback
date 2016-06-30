@@ -19,6 +19,13 @@ namespace AppFeedBack.ViewModels
         public string Text { get; set; }
 
         /// <summary>
+        /// Дата и врема создания отзыва
+        /// </summary>
+        [DataType(DataType.Date)]
+        [Display(Name = "Дата создания")]
+        public DateTime PostDate { get; set; }
+
+        /// <summary>
         /// Название категории
         /// </summary>
         [Display(Name = "Категория")]

@@ -34,7 +34,7 @@ namespace AppFeedBack.Domain.Entities
         public DateTime PostDate { get; set; }
 
         [ForeignKey("Category")]
-        public Guid CategoryId { get; set; }
+        public virtual Guid CategoryId { get; set; }
 
         /// <summary>
         /// Категория, в которой оставлен отзыв

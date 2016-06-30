@@ -77,3 +77,7 @@ C:\Users\dlplotnikov.ROSNEFT\Documents\Visual Studio 2015\Projects\student\AppFe
 C:\Users\dlplotnikov.ROSNEFT\Documents\Visual Studio 2015\Projects\student\AppFeedback\AppFeedBack\obj\Debug\AppFeedBack.pdb
 C:\Users\Андрей\documents\visual studio 2013\Projects\AppFeedBack\AppFeedBack\bin\AppFeedBack.Domain.dll
 C:\Users\Андрей\documents\visual studio 2013\Projects\AppFeedBack\AppFeedBack\bin\AppFeedBack.Domain.pdb
+C:\Users\Андрей\documents\visual studio 2013\Projects\AppFeedBack\AppFeedBack\bin\PagedList.dll
+C:\Users\Андрей\documents\visual studio 2013\Projects\AppFeedBack\AppFeedBack\bin\PagedList.Mvc.dll
+C:\Users\Андрей\documents\visual studio 2013\Projects\AppFeedBack\AppFeedBack\bin\PagedList.xml
+C:\Users\Андрей\documents\visual studio 2013\Projects\AppFeedBack\AppFeedBack\bin\PagedList.Mvc.xml

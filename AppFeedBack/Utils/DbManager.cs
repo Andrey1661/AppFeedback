@@ -4,7 +4,6 @@ using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using AppFeedBack.Domain;
 using AppFeedBack.Domain.Entities;
 using AppFeedBack.ViewModels;
@@ -75,6 +74,40 @@ namespace AppFeedBack.Utils
             }
 
             return categories;
+        }
+
+        /// <summary>
+        /// Возвращает коллекцию моделей представления для отзывов
+        /// </summary>
+        /// <param name="author">Фильтр по автору</param>
+        /// <param name="category">Фильтр по категории</param>
+        /// <returns></returns>
+        public static async Task<IEnumerable<FeedbackDisplayViewModel>> GetFeedbacks(string author, string category)
+        {
+            using (var db = new FeedbackContext())
+            {
+                IQueryable<Feedback> feedbacks = db.Feedbacks;
+
+                if (!string.IsNullOrWhiteSpace(author))
+                {
+                    feedbacks = db.Feedbacks.Where(t => t.UserName == author);
+                }
+                else if (!string.IsNullOrWhiteSpace(category))
+                {
+                    feedbacks = db.Feedbacks.Where(t => t.Category.Name == category);
+                }
+
+                var model = await feedbacks.OrderBy(t => t.PostDate).Select(t => new FeedbackDisplayViewModel
+                {
+                    Text = t.Text,
+                    Author = t.UserName,
+                    Category = t.Category.Name,
+                    Id = t.Id,
+                    PostDate = t.PostDate
+                }).ToListAsync();
+
+                return model;
+            }
         }
     }
 }

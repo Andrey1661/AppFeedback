@@ -1,6 +1,22 @@
-﻿@model ICollection<AppFeedBack.ViewModels.FeedbackDisplayViewModel>
+﻿@using PagedList.Mvc
+@model AppFeedBack.ViewModels.FeedbackIndexViewModel
 
-<h2>Ваши отзывы</h2>
+<h2>Отзывы пользователей</h2>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="form-inline">
+            @using (Html.BeginForm("ViewFeedbacks", "FeedBack", FormMethod.Get))
+            {
+                @Html.TextBox("authorFilter", (string)ViewBag.authorFilter ?? "", new { @class = "form-control" })
+                
+                var selectList = from item in Model.Categories select new SelectListItem { Value = item, Text = item };
+                @Html.DropDownListFor(t => Model.Category, selectList, new { @class = "form-control" })
+                <input type="submit" class="btn btn-default" value="Поиск" />
+            }
+        </div>
+    </div>
+</div>
 
 <div class="row">
 
@@ -8,31 +24,41 @@
 
         <div class="feedback-wrapper">
 
-            @if (Model != null && Model.Any())
+            @if (Model != null && Model.Feedbacks.Any())
             {
-                foreach (var item in Model)
+                foreach (var item in Model.Feedbacks)
                 {
                     <div class="feedback-block">
 
-                        <div class="feedback-header">
-                            @Html.LabelFor(t => item.Category)
-                            @Html.DisplayFor(t => item.Category)
+                        <div class="feedback-head-block">
+                            <div>
+                                <span>Автор: @Html.ActionLink(item.Author, "ViewFeedbacks", new {AuthorFilter = item.Author})</span>
+                            </div>
+
+                            <span>Отправлен: @Html.DisplayFor(t => item.PostDate)</span>
+                            <span>В категории: @Html.ActionLink(item.Category, "ViewFeedbacks", new {CategoryFilter = item.Category})</span>
                         </div>
 
-                        <div class="feedback-main">
-                            @Html.DisplayTextFor(t => item.Text)
+                        <div class="feedback-text-block">
+                            <p class="text-justfy">
+                                @Html.DisplayFor(t => item.Text)
+                            </p>
                         </div>
 
                     </div>
                 }
             }
 
-        </div> 
+        </div>
 
-        <div class="panel-footer">
+        <div>
 
             @Html.ActionLink("Написать отзыв", "StoreFeedback", "FeedBack", null, new {@class = "btn btn-default"})
 
+        </div>
+
+        <div class="btn-group">
+            @Html.PagedListPager(Model.Feedbacks, page => Url.Action("ViewFeedbacks", new { page, AuthorFilter = Model.AuthorFilter, Category = Model.Category }))
         </div>
 
     </div>

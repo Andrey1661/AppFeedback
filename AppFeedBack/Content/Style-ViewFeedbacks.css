@@ -1,12 +1,24 @@
 ﻿
-
-.feedback-block {
-    margin: 20px 0 40px 20px;
+.feedback-block { 
     padding: 10px;
+    margin: 20px 0 20px;
     border: 1px solid lightgray;
     border-radius: 5px;
 }
 
-.feedback-block:last-child {
-    margin-bottom: 20px;
+.feedback-text-block {
+    
+}
+
+.feedback-head-block {
+    margin-bottom: 5px;
+    border-bottom: 1px dashed lightgray;
+}
+
+.feedback-head-block span {
+    margin-right: 5px;
+}
+
+.feedback-search {
+    
 }
