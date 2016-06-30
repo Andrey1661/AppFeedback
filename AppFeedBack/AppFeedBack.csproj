@@ -134,8 +134,9 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Icons\cross-active.png" />
     <Content Include="Content\Icons\file-icon.png" />
-    <Content Include="Content\Icons\сlose.png" />
+    <Content Include="Content\Icons\cross.png" />
     <Content Include="Content\Style-Form.css" />
     <Content Include="Content\Style-ViewFeedbacks.css" />
     <Content Include="favicon.ico" />
@@ -144,11 +145,15 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\CustomValidation\CustomValidation.js" />
     <Content Include="Scripts\Feedback\FeedbackCreate.js" />
-    <Content Include="Scripts\jquery-1.10.2.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <None Include="Scripts\jquery-3.0.0.intellisense.js" />
+    <Content Include="Scripts\jquery-3.0.0.js" />
+    <Content Include="Scripts\jquery-3.0.0.min.js" />
+    <Content Include="Scripts\jquery-3.0.0.slim.js" />
+    <Content Include="Scripts\jquery-3.0.0.slim.min.js" />
+    <Content Include="Scripts\jquery-3.0.0.slim.min.map" />
+    <Content Include="Scripts\jquery-3.0.0.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
@@ -171,7 +176,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\FeedBack\StoreFeedback.cshtml" />
     <Content Include="Views\FeedBack\Success.cshtml" />
     <Content Include="Views\FeedBack\ViewFeedbacks.cshtml" />

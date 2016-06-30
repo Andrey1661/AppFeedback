@@ -28,7 +28,7 @@ namespace AppFeedBack.Validation
         public IEnumerable<ModelClientValidationRule> GetClientValidationRules(ModelMetadata metadata,
             ControllerContext context)
         {
-            ModelClientValidationRule notNullRule = new ModelClientValidationRule
+            var notNullRule = new ModelClientValidationRule
             {
                 ErrorMessage = ErrorMessageString,
                 ValidationType = "notempty"

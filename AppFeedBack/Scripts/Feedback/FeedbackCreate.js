@@ -2,6 +2,7 @@
 
 $(document).ready(function() {
 
+    //Клик по кнопке "Прикрепить файл"
     $("#attachFile").click(function(event) {
 
         $("#file-error").remove();
@@ -15,9 +16,13 @@ $(document).ready(function() {
         input.css = "display: none";
 
         input.change(function () {
-            box.append(input);
-            fileIndex++;
-            addFilePreview($(this).prop("files")[0], input);
+            var file = $(this).prop("files")[0];
+
+            if (validateFile(file)) {
+                box.append(input);
+                fileIndex++;
+                addFilePreview(file, input);
+            }           
         });
 
         input.click();
@@ -25,6 +30,68 @@ $(document).ready(function() {
     });
 });
 
+//Проверка загружаемого файла
+function validateFile(file) {
+    var box = $("#file-validation-box");
+    var inputs = $("input[type=file]");
+
+    box.empty();
+    var msg = $("<span id ='file-validation-message' class = 'text-danger'>");
+
+    //true, если файл с таким именем уже добавлен
+    var exists = false;
+    //true, если файл превышает максимально допустимый размер (5МБ)
+    var bigsize = false;
+
+    for (var i = 0; i < inputs.length; i++) {
+        if (file.name == inputs[i].files[0].name) {
+            msg.html("Файл уже добавлен");
+            exists = true;
+            break;
+        }
+    }
+
+    if (file.size > 5242880) {
+        msg.html("Размер файла превышает максимальное значение 5МБ");
+        bigsize = true;
+    }
+
+    if (!(bigsize || exists)) return true;
+
+    box.append(msg);
+
+    setTimeout(function() {
+        msg.animate({
+            opacity: 0
+        }, 1000, function() {
+            this.remove();
+        });
+    }, 3000);
+
+    return false;
+}
+
+//Проверяет все прикрепленные файлы на превышения максимально допустимого суммарного размера (15МБ)
+function validateFiles() {
+    var inputs = $("input[type=file]");
+
+    var totalSize = 0;
+    var maxSize = 15728640;
+
+    for (var i = 0; i < inputs.length; i++) {
+        totalSize += inputs[i].files[0].size;
+    }
+
+    if (totalSize > maxSize) {
+        var box = $("#file-validation-box");
+        box.empty();
+        var msg = $("<span id ='file-validation-message' class = 'text-danger'>");
+
+        msg.html("Общий объем передаваемых файлов не должен превышать 15МБ");
+    }
+}
+
+//Переназначает имена элементам input[type=file] при удалении прикрепленного файла
 function resetFileInputs() {
 
     fileIndex = 0;
@@ -37,6 +104,7 @@ function resetFileInputs() {
 
 };
 
+//При добавлении файла создает preview с именем и рамером этого файла
 function addFilePreview(file, input) {
 
     var container = $("#preview-container");
@@ -45,7 +113,14 @@ function addFilePreview(file, input) {
     var closeBox = $("<div class = 'delete-preview-box'>");
     var label = $("<span>");
     var image = $("<img style = 'width: 30px;' src = '/Content/Icons/file-icon.png'/>");
-    var close = $("<img style = 'width: 16px;' src = '/Content/Icons/close.png'/>");
+    var close = $("<img style = 'width: 16px;' src = '/Content/Icons/cross.png'/>");
+
+    close.mouseenter(function() {
+        $(this).attr("src", "/Content/Icons/cross-active.png");
+    });
+    close.mouseleave(function() {
+        $(this).attr("src", "/Content/Icons/cross.png");
+    });
 
     close.click(function () {
         input.remove();

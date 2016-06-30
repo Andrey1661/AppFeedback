@@ -20,6 +20,7 @@ namespace AppFeedBack.ViewModels
         /// </summary>
         [DataType(DataType.MultilineText)]
         [Required(ErrorMessage = "Необходимо заполнить поле")]
+        [MaxLength(4000, ErrorMessage = "Максимальная длина сообщения - 4000 символов")]
         public string Text { get; set; }
 
         /// <summary>

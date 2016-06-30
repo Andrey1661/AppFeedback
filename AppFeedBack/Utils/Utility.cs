@@ -16,27 +16,6 @@ namespace AppFeedBack.Utils
     public static class Utility
     {
         /// <summary>
-        /// Формирует список моделей представления для категорий из базы данных
-        /// </summary>
-        /// <returns>Коллекция моделей представления</returns>
-        public static async Task<ICollection<CategoryViewModel>> GetCategories()
-        {
-            var categories = new List<CategoryViewModel>
-            {
-                new CategoryViewModel{Id = Guid.Empty, Name = "Не выбрана"}
-            };
-
-            using (var db = new FeedbackContext())
-            {
-                categories.AddRange(
-                    await db.Categories.Select(t => new CategoryViewModel { Id = t.Id, Name = t.Name }).ToListAsync());
-            }
-
-            return categories;
-        }
-
-
-        /// <summary>
         /// Сохраняет переданные файлы на сервер в указанный каталог
         /// </summary>
         /// <param name="files">Файлы для сохранения</param>

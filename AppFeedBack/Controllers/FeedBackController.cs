@@ -19,6 +19,7 @@ namespace AppFeedBack.Controllers
         /// Возвращает представление со списком отзывов пользователей
         /// </summary>
         /// <returns></returns>
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> ViewFeedbacks()
         {
             string userName = string.IsNullOrWhiteSpace(User.Identity.Name) ? "Default" : User.Identity.Name;
@@ -47,7 +48,7 @@ namespace AppFeedBack.Controllers
         {
             var model = new FeedbackCreateViewModel
             {
-                Categories = await Utility.GetCategories()
+                Categories = await DbManager.GetCategories()
             };
 
             if (id != null)
@@ -67,14 +68,14 @@ namespace AppFeedBack.Controllers
         /// <summary>
         /// Получает и сохраняет в базу данные для создания или изменения отзыва
         /// </summary>
-        /// <param name="model"></param>
+        /// <param name="model">Модлеь с данными из представления</param>
         /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> StoreFeedback(FeedbackCreateViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                model.Categories = await Utility.GetCategories();
+                model.Categories = await DbManager.GetCategories();
                 return View(model);
             }
 

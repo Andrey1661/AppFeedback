@@ -32,7 +32,7 @@ namespace AppFeedBack.Utils
                 feedback.PostDate = DateTime.Now;
                 feedback.CategoryId = model.Category;
 
-                if (!string.IsNullOrWhiteSpace(path))
+                if (!String.IsNullOrWhiteSpace(path))
                 {
                     string fullPath = Path.Combine(path, userName);
 
@@ -55,6 +55,26 @@ namespace AppFeedBack.Utils
 
                 return await db.SaveChangesAsync();
             }
+        }
+
+        /// <summary>
+        /// Формирует список моделей представления для категорий из базы данных
+        /// </summary>
+        /// <returns>Коллекция моделей представления</returns>
+        public static async Task<ICollection<CategoryViewModel>> GetCategories()
+        {
+            var categories = new List<CategoryViewModel>
+            {
+                new CategoryViewModel{Id = Guid.Empty, Name = "Не выбрана"}
+            };
+
+            using (var db = new FeedbackContext())
+            {
+                categories.AddRange(
+                    await db.Categories.Select(t => new CategoryViewModel { Id = t.Id, Name = t.Name }).ToListAsync());
+            }
+
+            return categories;
         }
     }
 }
