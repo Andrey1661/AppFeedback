@@ -21,30 +21,27 @@ namespace AppFeedBack.Utils
         /// <param name="files">Файлы для сохранения</param>
         /// <param name="path">Каталог для сохранения</param>
         /// <returns>Список полных имен сохраненный файлов</returns>
-        public static ICollection<string> SaveFilesToServer(ICollection<HttpPostedFileBase> files, string path)
+        public static IEnumerable<string> SaveFilesToServer(ICollection<HttpPostedFileBase> files, string path)
         {
-            if (files == null || !files.Any()) return new List<string>();
+            var filePaths = new List<string>();
 
-            //string user = User.Identity.Name;
-            string user = "Default";
-
-            var id = Guid.NewGuid().ToString();
-            path = Path.Combine(path, id);
+            if (files == null || !files.Any()) return filePaths;
 
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
             }
 
-            var fileNames = new List<string>();
-
             foreach (var file in files)
             {
-                fileNames.Add(Path.Combine(path, Path.GetFileName(file.FileName)));
-                file.SaveAs(fileNames.Last());
+                if (file != null)
+                {
+                    filePaths.Add(Path.Combine(path, file.FileName));
+                    file.SaveAs(filePaths.Last());
+                }          
             }
 
-            return fileNames;
+            return filePaths;
         }
     }
 }

@@ -27,7 +27,12 @@ namespace AppFeedBack.ViewModels
         /// Категория, к которой относится отзыв
         /// </summary>
         [NotEmpty(ErrorMessage = "Категория не выбрана")]
-        public Guid Category { get; set; }
+        public Guid CategoryId { get; set; }
+
+        /// <summary>
+        /// Имя автора
+        /// </summary>
+        public string UserName { get; set; }
 
         /// <summary>
         /// Прикрепленные пользователем файлы

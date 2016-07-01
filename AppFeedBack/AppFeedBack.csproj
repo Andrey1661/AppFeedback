@@ -137,7 +137,7 @@
     <Compile Include="ViewModels\CategoryViewModel.cs" />
     <Compile Include="ViewModels\FeedbackDisplayViewModel.cs" />
     <Compile Include="ViewModels\FeedbackCreateViewModel.cs" />
-    <Compile Include="ViewModels\FeedbackIndexViewModel.cs" />
+    <Compile Include="ViewModels\IndexViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />

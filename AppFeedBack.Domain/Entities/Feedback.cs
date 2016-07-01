@@ -19,7 +19,6 @@ namespace AppFeedBack.Domain.Entities
         /// <summary>
         /// Имя автора отзыва
         /// </summary>
-        [Required]
         public string UserName { get; set; }
 
         /// <summary>
@@ -46,8 +45,11 @@ namespace AppFeedBack.Domain.Entities
         /// </summary>
         public virtual ICollection<FeedBackFile> AttachedFiles { get; set; }
 
-        public Feedback()
+        public Feedback() : this(Guid.Empty) { }
+
+        public Feedback(Guid id)
         {
+            Id = id;
             AttachedFiles = new List<FeedBackFile>();
         }
     }

@@ -15,7 +15,7 @@ namespace AppFeedBack.Domain.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public virtual Guid Id { get; set; }
+        public Guid Id { get; set; }
 
         /// <summary>
         /// Физический путь к файлу, хранящемуся на сервере

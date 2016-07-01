@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.Entity;
 using System.Linq;
+using System.Runtime.Remoting.Channels;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using AppFeedBack.Domain;
@@ -16,16 +17,19 @@ namespace AppFeedBack.Controllers
         /// Возвращает представление со списком отзывов пользователей
         /// </summary>
         /// <returns></returns>
-        public async Task<ActionResult> ViewFeedbacks(FeedbackIndexViewModel model)
+        public async Task<ActionResult> ViewFeedbacks(string filter, string category, int? page)
         {
-            model = model ?? new FeedbackIndexViewModel();
+            page = page ?? 1;
 
-            int pageNum = model.Page ?? 1;
-            int pageSize = 3;
-
-            model.Categories = (await DbManager.GetCategories()).Select(t => t.Name);
-            model.Feedbacks = (await DbManager.GetFeedbacks(model.AuthorFilter, model.Category)).ToPagedList(pageNum, pageSize);
-
+            var model = new IndexViewModel
+            {
+                Feedbacks = (await DbManager.GetFeedbacks(filter, category)).ToPagedList((int) page, 3),
+                CategoryList = await DbManager.GetCategories("Все категории"),
+                Filter = filter,
+                Category = category,
+                Page = page
+            };
+                
             return View(model);
         }
 
@@ -36,21 +40,11 @@ namespace AppFeedBack.Controllers
         /// <returns></returns>
         public async Task<ActionResult> StoreFeedback(Guid? id)
         {
-            var model = new FeedbackCreateViewModel
-            {
-                Categories = await DbManager.GetCategories()
-            };
+            id = id ?? Guid.Empty;
+            var model = await DbManager.GetFeedbackModel((Guid) id);
 
-            if (id != null)
-            {
-                using (var db = new FeedbackContext())
-                {
-                    var feedback = await db.Feedbacks.FirstOrDefaultAsync(t => t.Id == (Guid) id);
-                    model.Id = id;
-                    model.Text = feedback.Text;
-                    model.Category = feedback.Category.Id;
-                }
-            }
+            if (model == null)
+                return HttpNotFound();
 
             return View(model);
         }
@@ -65,13 +59,12 @@ namespace AppFeedBack.Controllers
         {
             if (!ModelState.IsValid)
             {
-                model.Categories = await DbManager.GetCategories();
+                model = await DbManager.GetFeedbackModel();
                 return View(model);
             }
 
-            string userName = string.IsNullOrWhiteSpace(User.Identity.Name) ? "Default" : User.Identity.Name;
             string path = Server.MapPath("~/Uploads/");
-            await DbManager.StoreFeedback(model, userName, path);
+            await DbManager.StoreFeedback(model, path);
 
             return RedirectToAction("ViewFeedbacks");
         }
