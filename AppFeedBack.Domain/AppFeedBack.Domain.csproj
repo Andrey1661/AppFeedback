@@ -70,6 +70,10 @@
     <Compile Include="Migrations\201607010416504_FeedbackAllowUserEmpty.Designer.cs">
       <DependentUpon>201607010416504_FeedbackAllowUserEmpty.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201607041041510_FeedbackIdNoIdentity.cs" />
+    <Compile Include="Migrations\201607041041510_FeedbackIdNoIdentity.Designer.cs">
+      <DependentUpon>201607041041510_FeedbackIdNoIdentity.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -89,6 +93,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607010416504_FeedbackAllowUserEmpty.resx">
       <DependentUpon>201607010416504_FeedbackAllowUserEmpty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607041041510_FeedbackIdNoIdentity.resx">
+      <DependentUpon>201607041041510_FeedbackIdNoIdentity.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

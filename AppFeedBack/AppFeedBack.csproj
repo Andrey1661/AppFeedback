@@ -136,7 +136,7 @@
     <Compile Include="Validation\NotEmptyAttribute.cs" />
     <Compile Include="ViewModels\CategoryViewModel.cs" />
     <Compile Include="ViewModels\FeedbackDisplayViewModel.cs" />
-    <Compile Include="ViewModels\FeedbackCreateViewModel.cs" />
+    <Compile Include="ViewModels\FeedbackStoreViewModel.cs" />
     <Compile Include="ViewModels\IndexViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -188,6 +188,7 @@
     <Content Include="Views\FeedBack\StoreFeedback.cshtml" />
     <Content Include="Views\FeedBack\Success.cshtml" />
     <Content Include="Views\FeedBack\ViewFeedbacks.cshtml" />
+    <Content Include="Views\FeedBack\ConfirmDelete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

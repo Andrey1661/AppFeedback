@@ -29,8 +29,8 @@ namespace AppFeedBack.ViewModels
     {
         public IPagedList<FeedbackDisplayViewModel> Feedbacks { get; set; }
 
-        [Display(Name = "Фильтр")]
-        public string Filter { get; set; }
+        [Display(Name = "Автор")]
+        public string Author { get; set; }
 
         [Display(Name = "Категория")]
         public string Category { get; set; }

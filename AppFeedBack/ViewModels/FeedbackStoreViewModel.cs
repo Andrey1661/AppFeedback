@@ -11,9 +11,11 @@ namespace AppFeedBack.ViewModels
     /// <summary>
     /// Модель представления, хранящая данные отзыва пользователя
     /// </summary>
-    public class FeedbackCreateViewModel
+    public class FeedbackStoreViewModel
     {
         public Guid? Id { get; set; }
+
+        public bool EditMode { get; set; }
 
         /// <summary>
         /// Текст отзыва

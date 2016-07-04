@@ -10,7 +10,7 @@
             @using (Html.BeginForm("ViewFeedbacks", "FeedBack", FormMethod.Get))
             {
                 <div>
-                    @Html.TextBox("filter", Model.Filter, new { @class = "form-control" })
+                    @Html.TextBox("author", Model.Author, new { @class = "form-control" })
                     <input type="submit" class="btn btn-default" value="Поиск" />
                 </div>
 
@@ -50,7 +50,7 @@
 
                         <div class="feedback-head-block">
                             <div>
-                                <span>Автор: @Html.ActionLink(item.Author ?? "Не указан", "ViewFeedbacks", new {filter = item.Author ?? ""})</span>
+                                <span>Автор: @Html.ActionLink(item.Author ?? "Не указан", "ViewFeedbacks", new {author = item.Author})</span>
                             </div>
 
                             <span>Отправлен: @Html.DisplayFor(t => item.PostDate)</span>
@@ -67,8 +67,13 @@
                             <span>Файлы: </span>
                             @foreach (var file in item.Files)
                             {
-                                <span>@Html.ActionLink(Path.GetFileName(file), "Download", "FeedBack", new { path = file }, null)</span>
+                                <span>@Html.ActionLink(Path.GetFileName(file), "Download", "FeedBack", new {path = file}, null)</span>
                             }
+                        </div>
+
+                        <div>
+                            <span>@Html.ActionLink("Редактировать", "StoreFeedback", "FeedBack", new {id = item.Id}, null)</span>
+                            <span>@Html.ActionLink("Удалить", "DeleteFeedback", "FeedBack", new { id = item.Id }, null)</span>
                         </div>
                     </div>
                 }
@@ -85,7 +90,7 @@
         </div>
 
         <div class="btn-group">
-            @Html.PagedListPager(Model.Feedbacks, page => Url.Action("ViewFeedbacks", new { filter = Model.Filter, category = Model.Category, orderBy = Model.OrderBy, page }))
+            @Html.PagedListPager(Model.Feedbacks, page => Url.Action("ViewFeedbacks", new { author = Model.Author, category = Model.Category, orderBy = Model.OrderBy, page }))
         </div>
 
     </div>

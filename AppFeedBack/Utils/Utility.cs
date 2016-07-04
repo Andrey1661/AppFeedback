@@ -32,5 +32,17 @@ namespace AppFeedBack.Utils
                 yield return Path.Combine(path, file.FileName);
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path"></param>
+        public static void DeleteAttachedFiles(string path)
+        {
+            if (Directory.Exists(path))
+            {
+                Directory.Delete(path, true);
+            }       
+        }
     }
 }

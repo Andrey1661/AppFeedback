@@ -16,18 +16,27 @@ namespace AppFeedBack.Controllers
     public class FeedBackController : Controller
     {
         /// <summary>
+        /// Возвращает физический путь к каталогу, в котором хранятся прикрепленные пользователями файлы
+        /// </summary>
+        public string PathToUploadedFiles
+        {
+            get { return Server.MapPath("~/Uploads"); }
+        }
+
+        /// <summary>
         /// Возвращает представление со списком отзывов пользователей
         /// </summary>
         /// <returns></returns>
-        public async Task<ActionResult> ViewFeedbacks(string filter, string category, int? page, OrderBy orderBy = OrderBy.Date)
+        public async Task<ActionResult> ViewFeedbacks(string author, string category, int? page, OrderBy orderBy = OrderBy.Date)
         {
             page = page ?? 1;
+            int itemsPerPage = 10;
 
             var model = new IndexViewModel
             {
-                Feedbacks = (await DbManager.GetFeedbacks(filter, category, orderBy)).ToPagedList((int) page, 3),
+                Feedbacks = (await DbManager.GetFeedbacks(author, category, orderBy)).ToPagedList((int)page, itemsPerPage),
                 CategoryList = await DbManager.GetCategories("Все категории"),
-                Filter = filter,
+                Author = author,
                 Category = category,
                 OrderBy = orderBy,
                 Page = page
@@ -45,7 +54,7 @@ namespace AppFeedBack.Controllers
         {
             try
             {
-                path = Path.Combine(Server.MapPath("~/Uploads/"), path);
+                path = Path.Combine(PathToUploadedFiles, path);
 
                 var bytes = System.IO.File.ReadAllBytes(path);
                 string fileName = Path.GetFileName(path);
@@ -80,17 +89,33 @@ namespace AppFeedBack.Controllers
         /// <param name="model">Модлеь с данными из представления</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult> StoreFeedback(FeedbackCreateViewModel model)
+        public async Task<ActionResult> StoreFeedback(FeedbackStoreViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                model = await DbManager.GetFeedbackModel();
-                return View(model);
-            }
+            await DbManager.StoreFeedback(model, PathToUploadedFiles);
+            return RedirectToAction("ViewFeedbacks");
+        }
 
-            string path = Server.MapPath("~/Uploads/");
-            await DbManager.StoreFeedback(model, path);
+        /// <summary>
+        /// Выводит информацию об отзыве для подтверждения удаления
+        /// </summary>
+        /// <param name="id">id отзыва</param>
+        /// <returns></returns>
+        public async Task<ActionResult> DeleteFeedback(Guid id)
+        {
+            var model = await DbManager.GetFeedback(id);
+            if (model == null) return HttpNotFound();
 
+            return View("ConfirmDelete", model);
+        } 
+
+        /// <summary>
+        /// Удаляет выбранный отзыв и перенаправляет на главную страницу
+        /// </summary>
+        /// <param name="id">id отзыва</param>
+        /// <returns></returns>
+        public async Task<ActionResult> DeleteConfirmed(Guid id)
+        {
+            await DbManager.DeleteFeedback(id, PathToUploadedFiles);
             return RedirectToAction("ViewFeedbacks");
         }
     }

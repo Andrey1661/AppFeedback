@@ -13,7 +13,6 @@ namespace AppFeedBack.Domain.Entities
     public class Feedback
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
         /// <summary>

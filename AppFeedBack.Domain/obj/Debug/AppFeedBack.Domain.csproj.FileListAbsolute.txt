@@ -13,3 +13,4 @@ C:\Users\Андрей\documents\visual studio 2013\Projects\AppFeedBack\AppFeedB
 C:\Users\Андрей\documents\visual studio 2013\Projects\AppFeedBack\AppFeedBack.Domain\obj\Debug\AppFeedBack.Domain.Migrations.FeedbackFileTable.resources
 C:\Users\Андрей\documents\visual studio 2013\Projects\AppFeedBack\AppFeedBack.Domain\obj\Debug\AppFeedBack.Domain.Migrations.FeedbackFilePathPropRemove.resources
 C:\Users\Андрей\documents\visual studio 2013\Projects\AppFeedBack\AppFeedBack.Domain\obj\Debug\AppFeedBack.Domain.Migrations.FeedbackAllowUserEmpty.resources
+C:\Users\Андрей\documents\visual studio 2013\Projects\AppFeedBack\AppFeedBack.Domain\obj\Debug\AppFeedBack.Domain.Migrations.FeedbackIdNoIdentity.resources
