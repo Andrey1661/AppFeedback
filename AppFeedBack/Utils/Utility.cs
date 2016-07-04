@@ -1,47 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Web;
-using AppFeedBack.Domain;
-using AppFeedBack.ViewModels;
 
 namespace AppFeedBack.Utils
 {
-    /// <summary>
-    /// Класс, предоставлящие методы общего пользования
-    /// </summary>
-    public static class Utility
+    public class Utility
     {
         /// <summary>
         /// Сохраняет переданные файлы на сервер в указанный каталог
         /// </summary>
         /// <param name="files">Файлы для сохранения</param>
+        /// <param name="rootPath">Каталог, где будут созданы подкаталоги для сохранения файлов</param>
         /// <param name="path">Каталог для сохранения</param>
         /// <returns>Список полных имен сохраненный файлов</returns>
-        public static IEnumerable<string> SaveFilesToServer(ICollection<HttpPostedFileBase> files, string path)
+        public static IEnumerable<string> SaveFilesToServer(ICollection<HttpPostedFileBase> files, string rootPath, string path)
         {
-            var filePaths = new List<string>();
+            if (files == null || !files.Any()) yield break;
 
-            if (files == null || !files.Any()) return filePaths;
+            string directory = Path.Combine(rootPath, path);
 
-            if (!Directory.Exists(path))
+            if (!Directory.Exists(directory))
             {
-                Directory.CreateDirectory(path);
+                Directory.CreateDirectory(directory);
             }
 
-            foreach (var file in files)
+            foreach (var file in files.Where(file => file != null))
             {
-                if (file != null)
-                {
-                    filePaths.Add(Path.Combine(path, file.FileName));
-                    file.SaveAs(filePaths.Last());
-                }          
+                file.SaveAs(Path.Combine(directory, file.FileName));
+                yield return Path.Combine(path, file.FileName);
             }
-
-            return filePaths;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace AppFeedBack.ViewModels
@@ -33,5 +34,11 @@ namespace AppFeedBack.ViewModels
         /// </summary>
         [Display(Name = "Автор")]
         public string Author { get; set; }
+
+        /// <summary>
+        /// Пути к прикрепленным файлам
+        /// </summary>
+        [Display(Name = "Прикрепленные файлы")]
+        public IEnumerable<string> Files { get; set; } 
     }
 }

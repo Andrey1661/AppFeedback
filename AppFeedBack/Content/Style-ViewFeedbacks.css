@@ -6,10 +6,6 @@
     border-radius: 5px;
 }
 
-.feedback-text-block {
-    
-}
-
 .feedback-head-block {
     margin-bottom: 5px;
     border-bottom: 1px dashed lightgray;
@@ -19,6 +15,17 @@
     margin-right: 5px;
 }
 
-.feedback-search {
-    
+.dropdown-block {
+    display: inline-block;
+    max-width: 400px;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.file-block {
+    margin-top: 5px;
+}
+
+.file-block span {
+    margin-right: 10px;
 }

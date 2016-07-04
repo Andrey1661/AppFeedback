@@ -34,8 +34,7 @@ namespace AppFeedBack.Utils
 
                 if (!string.IsNullOrWhiteSpace(path))
                 {
-                    path = Path.Combine(path, feedback.Id.ToString());
-                    var files = Utility.SaveFilesToServer(model.Files, path);
+                    var files = Utility.SaveFilesToServer(model.Files, path, feedback.Id.ToString());
 
                     feedback.AttachedFiles = files.Select(file => new FeedBackFile
                     {
@@ -131,26 +130,50 @@ namespace AppFeedBack.Utils
         /// </summary>
         /// <param name="filter">Фильтр по автору и содержанию</param>
         /// <param name="category">Фильтр по категории</param>
+        /// <param name="order">Определяет поле и порядок сортировки</param>
         /// <returns></returns>
-        public static async Task<IEnumerable<FeedbackDisplayViewModel>> GetFeedbacks(string filter, string category)
+        public static async Task<IEnumerable<FeedbackDisplayViewModel>> GetFeedbacks(string filter, string category, OrderBy order)
         {
             using (var db = new FeedbackContext())
             {
                 IQueryable<Feedback> feedbacks = db.Feedbacks;
 
                 if (!string.IsNullOrWhiteSpace(filter))
-                    feedbacks = feedbacks.Where(t => t.UserName.Contains(filter));
+                    feedbacks = feedbacks.Where(t => t.UserName.Contains(filter) || t.Text.Contains(filter));
 
                 if (!string.IsNullOrWhiteSpace(category))
                     feedbacks = feedbacks.Where(t => t.Category.Name == category);
 
-                var model = await feedbacks.OrderBy(t => t.PostDate).Select(t => new FeedbackDisplayViewModel
+                switch (order)
+                {
+                    case OrderBy.Author:
+                        feedbacks = feedbacks.OrderBy(t => t.UserName);
+                        break;
+                    case OrderBy.Category:
+                        feedbacks = feedbacks.OrderBy(t => t.Category.Name);
+                        break;
+                    case OrderBy.AuthorDesc:
+                        feedbacks = feedbacks.OrderByDescending(t => t.UserName);
+                        break;
+                    case OrderBy.CategoryDesc:
+                        feedbacks = feedbacks.OrderByDescending(t => t.Category.Name);
+                        break;
+                    case OrderBy.DateDesc:
+                        feedbacks = feedbacks.OrderByDescending(t => t.PostDate);
+                        break;
+                    default:
+                        feedbacks = feedbacks.OrderBy(t => t.PostDate);
+                        break;
+                }
+
+                var model = await feedbacks.Select(t => new FeedbackDisplayViewModel
                 {
                     Text = t.Text,
                     Author = t.UserName,
                     Category = t.Category.Name,
                     Id = t.Id,
-                    PostDate = t.PostDate
+                    PostDate = t.PostDate,
+                    Files = t.AttachedFiles.Select(f => f.FilePath)
                 }).ToListAsync();
 
                 return model;
