@@ -39,11 +39,11 @@ namespace AppFeedBack.ViewModels
         /// <summary>
         /// Прикрепленные пользователем файлы
         /// </summary>
-        public ICollection<HttpPostedFileBase> Files { get; set; }
+        public IEnumerable<HttpPostedFileBase> Files { get; set; }
 
         /// <summary>
         /// Список категорий для представления
         /// </summary>
-        public ICollection<CategoryViewModel> Categories { get; set; }
+        public IEnumerable<CategoryViewModel> Categories { get; set; }
     }
 }

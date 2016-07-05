@@ -32,7 +32,7 @@ namespace AppFeedBack.Domain.Entities
         public DateTime PostDate { get; set; }
 
         [ForeignKey("Category")]
-        public virtual Guid CategoryId { get; set; }
+        public Guid CategoryId { get; set; }
 
         /// <summary>
         /// Категория, в которой оставлен отзыв
@@ -40,16 +40,22 @@ namespace AppFeedBack.Domain.Entities
         public virtual Category Category { get; set; }
 
         /// <summary>
-        /// Сссылка на прикрепленные файлы
+        /// Ссылка на прикрепленные файлы
         /// </summary>
-        public virtual ICollection<FeedBackFile> AttachedFiles { get; set; }
+        public virtual ICollection<FeedbackFile> AttachedFiles { get; set; }
 
-        public Feedback() : this(Guid.Empty) { }
+        public Feedback()
+        {
+            AttachedFiles = new List<FeedbackFile>();
+        }
 
-        public Feedback(Guid id)
+        public Feedback(Guid id, Guid categoryId, string text, DateTime postDate, string userName = "") : this()
         {
             Id = id;
-            AttachedFiles = new List<FeedBackFile>();
+            CategoryId = categoryId;
+            Text = text;
+            PostDate = PostDate;
+            UserName = userName;
         }
     }
 }

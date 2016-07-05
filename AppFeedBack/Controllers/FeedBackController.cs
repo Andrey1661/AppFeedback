@@ -18,7 +18,7 @@ namespace AppFeedBack.Controllers
         /// <summary>
         /// Возвращает физический путь к каталогу, в котором хранятся прикрепленные пользователями файлы
         /// </summary>
-        public string PathToUploadedFiles
+        private string PathToUploadedFiles
         {
             get { return Server.MapPath("~/Uploads"); }
         }
@@ -29,19 +29,9 @@ namespace AppFeedBack.Controllers
         /// <returns></returns>
         public async Task<ActionResult> ViewFeedbacks(string author, string category, int? page, OrderBy orderBy = OrderBy.Date)
         {
-            page = page ?? 1;
-            int itemsPerPage = 10;
+            var manager = new DbManager();
+            var model = await manager.CreateIndexViewModel(author, category, orderBy, page ?? 1);
 
-            var model = new IndexViewModel
-            {
-                Feedbacks = (await DbManager.GetFeedbacks(author, category, orderBy)).ToPagedList((int)page, itemsPerPage),
-                CategoryList = await DbManager.GetCategories("Все категории"),
-                Author = author,
-                Category = category,
-                OrderBy = orderBy,
-                Page = page
-            };
-                
             return View(model);
         }
 
@@ -73,9 +63,9 @@ namespace AppFeedBack.Controllers
         /// <param name="id">Id существующего отзыва для редактирования</param>
         /// <returns></returns>
         public async Task<ActionResult> StoreFeedback(Guid? id)
-        {
-            id = id ?? Guid.Empty;
-            var model = await DbManager.GetFeedbackModel((Guid) id);
+        {           
+            var manager = new DbManager();
+            var model = await manager.GetFeedbackModel(id ?? Guid.Empty);
 
             if (model == null)
                 return HttpNotFound();
@@ -91,7 +81,13 @@ namespace AppFeedBack.Controllers
         [HttpPost]
         public async Task<ActionResult> StoreFeedback(FeedbackStoreViewModel model)
         {
-            await DbManager.StoreFeedback(model, PathToUploadedFiles);
+            if (!model.EditMode)
+            {
+                model.UserName = User.Identity.Name;
+            }
+
+            var manager = new DbManager();
+            await manager.StoreFeedback(model, PathToUploadedFiles);
             return RedirectToAction("ViewFeedbacks");
         }
 
@@ -102,7 +98,8 @@ namespace AppFeedBack.Controllers
         /// <returns></returns>
         public async Task<ActionResult> DeleteFeedback(Guid id)
         {
-            var model = await DbManager.GetFeedback(id);
+            var manager = new DbManager();
+            var model = await manager.GetFeedback(id);
             if (model == null) return HttpNotFound();
 
             return View("ConfirmDelete", model);
@@ -115,7 +112,8 @@ namespace AppFeedBack.Controllers
         /// <returns></returns>
         public async Task<ActionResult> DeleteConfirmed(Guid id)
         {
-            await DbManager.DeleteFeedback(id, PathToUploadedFiles);
+            var manager = new DbManager();
+            await manager.DeleteFeedback(id, PathToUploadedFiles);
             return RedirectToAction("ViewFeedbacks");
         }
     }

@@ -26,7 +26,11 @@
     margin-top: 5px;
 }
 
-.link-block, span
+.link-block span,
 .file-block span {
     margin-right: 10px;
+}
+
+.link-block {
+    text-align: right;
 }

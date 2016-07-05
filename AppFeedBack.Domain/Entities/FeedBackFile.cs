@@ -11,7 +11,7 @@ namespace AppFeedBack.Domain.Entities
     /// <summary>
     /// Модель прикрепленного к отзыву файла
     /// </summary>
-    public class FeedBackFile
+    public class FeedbackFile
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -30,5 +30,12 @@ namespace AppFeedBack.Domain.Entities
         /// Ссылка на родительский отзыв
         /// </summary>
         public virtual Feedback Feedback { get; set; }
+
+        public FeedbackFile() { }
+
+        public FeedbackFile(string path)
+        {
+            FilePath = path;
+        }
     }
 }

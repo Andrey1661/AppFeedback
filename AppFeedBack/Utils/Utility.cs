@@ -15,7 +15,7 @@ namespace AppFeedBack.Utils
         /// <param name="rootPath">Каталог, где будут созданы подкаталоги для сохранения файлов</param>
         /// <param name="path">Каталог для сохранения</param>
         /// <returns>Список полных имен сохраненный файлов</returns>
-        public static IEnumerable<string> SaveFilesToServer(ICollection<HttpPostedFileBase> files, string rootPath, string path)
+        public static IEnumerable<string> SaveFilesToServer(IEnumerable<HttpPostedFileBase> files, string rootPath, string path)
         {
             if (files == null || !files.Any()) yield break;
 
@@ -34,9 +34,9 @@ namespace AppFeedBack.Utils
         }
 
         /// <summary>
-        /// 
+        /// Удаляет каталог и все файлы в нем
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Путь к каталогу</param>
         public static void DeleteAttachedFiles(string path)
         {
             if (Directory.Exists(path))

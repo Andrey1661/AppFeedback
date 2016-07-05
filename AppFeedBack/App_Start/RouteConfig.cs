@@ -14,8 +14,8 @@ namespace AppFeedBack
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
-                name: "Create",
-                url: "Feedback/Create/",
+                name: "Store",
+                url: "Feedback/Store/",
                 defaults: new { controller = "FeedBack", action = "StoreFeedback" }
             );
 
@@ -23,6 +23,12 @@ namespace AppFeedBack
                 name: "View",
                 url: "Feedback/View/",
                 defaults: new { controller = "FeedBack", action = "ViewFeedbacks" }
+                );
+
+            routes.MapRoute(
+                name: "Delete",
+                url: "Feedback/Delete",
+                defaults: new { controller = "FeedBack", action = "DeleteFeedback" }
                 );
 
             routes.MapRoute(

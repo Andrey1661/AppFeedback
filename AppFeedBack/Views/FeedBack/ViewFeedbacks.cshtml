@@ -5,7 +5,7 @@
 <h2>Отзывы пользователей</h2>
 
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-10">
         <div class="form-inline">
             @using (Html.BeginForm("ViewFeedbacks", "FeedBack", FormMethod.Get))
             {
@@ -50,11 +50,11 @@
 
                         <div class="feedback-head-block">
                             <div>
-                                <span>Автор: @Html.ActionLink(item.Author ?? "Не указан", "ViewFeedbacks", new {author = item.Author})</span>
+                                <span>Автор: @Html.ActionLink(item.Author ?? "Не указан", "ViewFeedbacks", new { author = item.Author })</span>
                             </div>
 
                             <span>Отправлен: @Html.DisplayFor(t => item.PostDate)</span>
-                            <span>В категории: @Html.ActionLink(item.Category, "ViewFeedbacks", new {category = item.Category})</span>
+                            <span>В категории: @Html.ActionLink(item.Category, "ViewFeedbacks", new { category = item.Category })</span>
                         </div>
 
                         <div class="feedback-text-block">
@@ -67,12 +67,12 @@
                             <span>Файлы: </span>
                             @foreach (var file in item.Files)
                             {
-                                <span>@Html.ActionLink(Path.GetFileName(file), "Download", "FeedBack", new {path = file}, null)</span>
+                                <span>@Html.ActionLink(Path.GetFileName(file), "Download", "FeedBack", new { path = file }, null)</span>
                             }
                         </div>
 
-                        <div>
-                            <span>@Html.ActionLink("Редактировать", "StoreFeedback", "FeedBack", new {id = item.Id}, null)</span>
+                        <div class="link-block">
+                            <span>@Html.ActionLink("Редактировать", "StoreFeedback", "FeedBack", new { id = item.Id }, null)</span>
                             <span>@Html.ActionLink("Удалить", "DeleteFeedback", "FeedBack", new { id = item.Id }, null)</span>
                         </div>
                     </div>

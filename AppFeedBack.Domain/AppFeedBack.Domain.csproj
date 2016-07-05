@@ -52,8 +52,9 @@
   <ItemGroup>
     <Compile Include="Entities\Category.cs" />
     <Compile Include="Entities\Feedback.cs" />
-    <Compile Include="Entities\FeedBackFile.cs" />
+    <Compile Include="Entities\FeedbackFile.cs" />
     <Compile Include="FeedbackContext.cs" />
+    <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Migrations\201606280419106_Refactor.cs" />
     <Compile Include="Migrations\201606280419106_Refactor.Designer.cs">
       <DependentUpon>201606280419106_Refactor.cs</DependentUpon>
@@ -76,6 +77,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\ContextRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
