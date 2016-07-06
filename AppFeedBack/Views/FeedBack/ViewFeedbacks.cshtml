@@ -1,4 +1,4 @@
-﻿@using PagedList.Mvc
+﻿@using AppFeedBack.Helpers
 @using AppFeedBack.ViewModels
 @model IndexViewModel
 
@@ -50,11 +50,11 @@
 
                         <div class="feedback-head-block">
                             <div>
-                                <span>Автор: @Html.ActionLink(item.Author ?? "Не указан", "ViewFeedbacks", new { author = item.Author })</span>
+                                <span>Автор: @Html.ActionLink(!string.IsNullOrWhiteSpace(item.Author) ? item.Author : "Не указан", "ViewFeedbacks", new {author = item.Author})</span>
                             </div>
 
                             <span>Отправлен: @Html.DisplayFor(t => item.PostDate)</span>
-                            <span>В категории: @Html.ActionLink(item.Category, "ViewFeedbacks", new { category = item.Category })</span>
+                            <span>В категории: @Html.ActionLink(item.Category, "ViewFeedbacks", new {category = item.Category})</span>
                         </div>
 
                         <div class="feedback-text-block">
@@ -67,13 +67,13 @@
                             <span>Файлы: </span>
                             @foreach (var file in item.Files)
                             {
-                                <span>@Html.ActionLink(Path.GetFileName(file), "Download", "FeedBack", new { path = file }, null)</span>
+                                <span>@Html.ActionLink(Path.GetFileName(file), "Download", "FeedBack", new {path = file}, null)</span>
                             }
                         </div>
 
                         <div class="link-block">
-                            <span>@Html.ActionLink("Редактировать", "StoreFeedback", "FeedBack", new { id = item.Id }, null)</span>
-                            <span>@Html.ActionLink("Удалить", "DeleteFeedback", "FeedBack", new { id = item.Id }, null)</span>
+                            <span>@Html.ActionLink("Редактировать", "StoreFeedback", "FeedBack", new {id = item.Id}, null)</span>
+                            <span>@Html.ActionLink("Удалить", "DeleteFeedback", "FeedBack", new {id = item.Id}, new {onclick = "return confirm('Вы действительно хотите удалить этот отзыв?')"})</span>
                         </div>
                     </div>
                 }
@@ -90,12 +90,11 @@
         </div>
 
         <div class="btn-group">
-            @Html.PagedListPager(Model.Feedbacks, page => Url.Action("ViewFeedbacks", new { author = Model.Author, category = Model.Category, orderBy = Model.OrderBy, page }))
+            @Html.Pagination(Model.Feedbacks, page => Url.Action("ViewFeedbacks", new {page, author = Model.Author, category = Model.Category, orderby = Model.OrderBy}))
         </div>
 
     </div>
 
 </div>
-
 
 

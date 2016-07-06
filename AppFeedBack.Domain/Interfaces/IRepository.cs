@@ -1,23 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
 using AppFeedBack.Domain.Entities;
+using PagedList;
 
 namespace AppFeedBack.Domain.Interfaces
 {
-    public interface IRepository
+    public interface IRepository<T>
     {
-        Task<int> InsertFeedback(Guid id, Guid categoryId, string text, string userName, IEnumerable<string> files);
+        Task<T> Get(Guid id);
 
-        Task<int> UpdateFeedback(Guid id, string text);
+        Task<IEnumerable<T>> GetList();
 
-        Task<Feedback> GetFeedback(Guid id);
+        Task<int> Insert(T item);
 
-        Task<IEnumerable<Feedback>> GetFeedbackList(string author, string category);
+        Task<int> Update(T item);
 
-        Task<IEnumerable<Category>> GetCategories();
-
-        Task<int> DeleteFeedback(Guid id);
+        Task<int> Delete(Guid id);
+            
+        Task<int> Delete(T item);
     }
 }

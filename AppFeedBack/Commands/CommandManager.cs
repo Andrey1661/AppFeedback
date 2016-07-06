@@ -1,28 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using AppFeedBack.Domain.Interfaces;
+using AppFeedBack.Domain;
+using AppFeedBack.Domain.Entities;
 using AppFeedBack.Domain.Repositories;
 using AppFeedBack.ViewModels;
-using PagedList;
 
 namespace AppFeedBack.Utils
 {
     /// <summary>
     /// Класс, используемый для взаимодействия с базой данных
     /// </summary>
-    public class DbManager
+    public class CommandManager
     {
-        private readonly IRepository _repository;
-
-        public DbManager()
-        {
-            _repository = new ContextRepository();
-        }
-
         /// <summary>
         /// Создает или изменяет отзыв пользователя в базе, используя готовую модель, и сохраняет файлы, переданные пользователем, по указанному пути на сервере
         /// </summary>
@@ -30,16 +22,17 @@ namespace AppFeedBack.Utils
         /// <param name="path">Путь к корневому каталогу, в который будут сохранены файлы, прикрепленные пользователем</param>
         public async Task<int> StoreFeedback(FeedbackStoreViewModel model, string path)
         {
+            var repository = new FeedbackRepository();
             var id = model.Id ?? Guid.NewGuid();
 
             if (model.EditMode)
             {
-                return await _repository.UpdateFeedback(id, model.Text);
+                return await repository.Update(id, model.Text);
             }
 
-            var files = Utility.SaveFilesToServer(model.Files, path, model.Id.ToString());
+            var files = ServerFileManager.SaveFilesToServer(model.Files, path, id.ToString());
 
-            return await _repository.InsertFeedback(
+            return await repository.Insert(
                 id,
                 model.CategoryId,
                 model.Text,
@@ -56,8 +49,9 @@ namespace AppFeedBack.Utils
         /// <returns>Возвращает true, если удаление успешно</returns>
         public async Task<int> DeleteFeedback(Guid id, string path)
         {
-            Utility.DeleteAttachedFiles(Path.Combine(path, id.ToString()));
-            return await _repository.DeleteFeedback(id);
+            var repository = new FeedbackRepository();
+            ServerFileManager.DeleteAttachedFiles(Path.Combine(path, id.ToString()));
+            return await repository.Delete(id);
         }
 
         /// <summary>
@@ -81,6 +75,7 @@ namespace AppFeedBack.Utils
         /// <returns></returns>
         public async Task<FeedbackStoreViewModel> GetFeedbackModel(Guid id, bool loadCategories = true)
         {
+            var repository = new FeedbackRepository();
             var model = new FeedbackStoreViewModel();
 
             if (loadCategories)
@@ -90,7 +85,7 @@ namespace AppFeedBack.Utils
 
             if (id == Guid.Empty) return model;
 
-            var feedback = await _repository.GetFeedback(id);
+            var feedback = await repository.Get(id);
 
             if (feedback != null)
             {
@@ -115,13 +110,14 @@ namespace AppFeedBack.Utils
         public async Task<IEnumerable<CategoryViewModel>> GetCategories(string defaultName = "")
         {
             var categories = new List<CategoryViewModel>();
+            var repository = new CategoryRepository();
 
             if (!string.IsNullOrWhiteSpace(defaultName))
             {
                 categories.Add(new CategoryViewModel(Guid.Empty, defaultName));
             }
 
-            var categoriesFromDb = await _repository.GetCategories();
+            var categoriesFromDb = await repository.GetActive();
             categories.AddRange(categoriesFromDb.Select(t => new CategoryViewModel(t.Id, t.Name)));
 
             return categories;
@@ -134,7 +130,8 @@ namespace AppFeedBack.Utils
         /// <returns></returns>
         public async Task<FeedbackDisplayViewModel> GetFeedback(Guid id)
         {
-            var feedback = await _repository.GetFeedback(id);
+            var repository = new FeedbackRepository();
+            var feedback = await repository.Get(id);
 
             if (feedback == null) return null;
 
@@ -144,59 +141,55 @@ namespace AppFeedBack.Utils
                 Text = feedback.Text,
                 Author = feedback.UserName,
                 PostDate = feedback.PostDate,
-                Category = feedback.Category.Name
+                Category = feedback.Category.Name,
+                Files = feedback.AttachedFiles.Select(f => f.FilePath)
             };
-        } 
+        }
 
         /// <summary>
-        /// Возвращает коллекцию моделей представления для отзывов
+        /// Возвращает список  моделей представления для отзывов
         /// </summary>
         /// <param name="author">Фильтр по автору и содержанию</param>
         /// <param name="category">Фильтр по категории</param>
         /// <param name="order">Определяет поле и порядок сортировки</param>
+        /// <param name="page">Задает страницу выдачи</param>
+        /// <param name="pageSize">Задает количество элементов на страницу</param>
         /// <returns></returns>
-        public async Task<IPagedList<FeedbackDisplayViewModel>> GetFeedbackPagedList(string author, string category, OrderBy order, int page = 1, int pageSize = 10)
+        public async Task<PagedList<FeedbackDisplayViewModel>> GetFeedbackPagedList(string author, string category, FeedbackOrderBy order, int page, int pageSize)
         {
-            var feedbacks = await _repository.GetFeedbackList(author, category);
+            var repository = new FeedbackRepository();
+            var result = await repository.GetPagedList(author, category, order, page, pageSize);
 
-            switch (order)
-            {
-                case OrderBy.Author:
-                    feedbacks = feedbacks.OrderBy(t => t.UserName);
-                    break;
-                case OrderBy.Category:
-                    feedbacks = feedbacks.OrderBy(t => t.Category.Name);
-                    break;
-                case OrderBy.AuthorDesc:
-                    feedbacks = feedbacks.OrderByDescending(t => t.UserName);
-                    break;
-                case OrderBy.CategoryDesc:
-                    feedbacks = feedbacks.OrderByDescending(t => t.Category.Name);
-                    break;
-                case OrderBy.DateDesc:
-                    feedbacks = feedbacks.OrderByDescending(t => t.PostDate);
-                    break;
-                default:
-                    feedbacks = feedbacks.OrderBy(t => t.PostDate);
-                    break;
-            }
-
-            return feedbacks.Select(t => new FeedbackDisplayViewModel
-            {
-                Text = t.Text,
-                Author = t.UserName,
-                Category = t.Category.Name,
-                Id = t.Id,
-                PostDate = t.PostDate,
-                Files = t.AttachedFiles.Select(f => f.FilePath)
-            }).ToPagedList(page, pageSize);
+            return new PagedList<FeedbackDisplayViewModel>(
+                result.Select(t => new FeedbackDisplayViewModel
+                {
+                    Id = t.Id,
+                    Category = t.Category.Name,
+                    Text = t.Text,
+                    PostDate = t.PostDate,
+                    Author = t.UserName,
+                    Files = t.AttachedFiles.Select(f => f.FilePath)
+                }),
+                result.Page,
+                result.PageSize,
+                result.TotalItems
+                );
         }
 
-        public async Task<IndexViewModel> CreateIndexViewModel(string author, string category, OrderBy orderBy = OrderBy.Date, int page = 1, int pageSize = 10)
+        /// <summary>
+        /// Создает модель представления на основе данных, полученных из БД с использованием указанных фильтров
+        /// </summary>
+        /// <param name="author">Фильтр по автору</param>
+        /// <param name="category">Фильтр по категории</param>
+        /// <param name="orderBy">Порядок сортировки</param>
+        /// <param name="page">Страница вывода</param>
+        /// <param name="pageSize">Количетсов элементов на страницу</param>
+        /// <returns></returns>
+        public async Task<IndexViewModel> CreateIndexViewModel(string author, string category, FeedbackOrderBy orderBy, int page, int pageSize = 3)
         {
             return new IndexViewModel
             {
-                Feedbacks = await GetFeedbackPagedList(author, category, orderBy),
+                Feedbacks = await GetFeedbackPagedList(author, category, orderBy, page, pageSize),
                 CategoryList = await GetCategories("Все категории"),
                 Author = author,
                 Category = category,

@@ -8,6 +8,30 @@ using System.Web;
 namespace AppFeedBack.Domain.Entities
 {
     /// <summary>
+    /// Предоставляет способы сортировки отзывов
+    /// </summary>
+    public enum FeedbackOrderBy
+    {
+        [Display(Name = "По автору")]
+        Author = 1,
+
+        [Display(Name = "По категории")]
+        Category = 2,
+
+        [Display(Name = "По дате")]
+        Date = 4,
+
+        [Display(Name = "По автору (в обратном порядке)")]
+        AuthorDesc = 8,
+
+        [Display(Name = "По категории (в обратном порядке)")]
+        CategoryDesc = 16,
+
+        [Display(Name = "По дате (в обратном порядке)")]
+        DateDesc = 32
+    }
+
+    /// <summary>
     /// Модель отзыва пользователя
     /// </summary>
     public class Feedback
@@ -54,7 +78,7 @@ namespace AppFeedBack.Domain.Entities
             Id = id;
             CategoryId = categoryId;
             Text = text;
-            PostDate = PostDate;
+            PostDate = postDate;
             UserName = userName;
         }
     }

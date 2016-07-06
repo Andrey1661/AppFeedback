@@ -1,33 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using PagedList;
+using AppFeedBack.Domain;
+using AppFeedBack.Domain.Entities;
 
 namespace AppFeedBack.ViewModels
 {
-    public enum OrderBy
-    {
-        [Display(Name = "По автору")]
-        Author = 1,
-
-        [Display(Name = "По категории")]
-        Category = 2,
-
-        [Display(Name = "По дате")]
-        Date = 4,
-
-        [Display(Name = "По автору (в обратном порядке)")]
-        AuthorDesc = 8,
-
-        [Display(Name = "По категории (в обратном порядке)")]
-        CategoryDesc = 16,
-
-        [Display(Name = "По дате (в обратном порядке)")]
-        DateDesc = 32
-    }
-
     public class IndexViewModel
     {
-        public IPagedList<FeedbackDisplayViewModel> Feedbacks { get; set; }
+        public PagedList<FeedbackDisplayViewModel> Feedbacks { get; set; }
 
         [Display(Name = "Автор")]
         public string Author { get; set; }
@@ -36,7 +16,7 @@ namespace AppFeedBack.ViewModels
         public string Category { get; set; }
 
         [Display(Name = "Сортировка")]
-        public OrderBy OrderBy { get; set; }
+        public FeedbackOrderBy OrderBy { get; set; }
 
         public int? Page { get; set; }
 
@@ -44,7 +24,7 @@ namespace AppFeedBack.ViewModels
 
         public IndexViewModel()
         {
-            OrderBy = OrderBy.Date;
+            OrderBy = FeedbackOrderBy.Date;
         }
     }
 }

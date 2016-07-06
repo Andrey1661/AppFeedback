@@ -6,7 +6,7 @@ using System.Web;
 
 namespace AppFeedBack.Utils
 {
-    public class Utility
+    public class ServerFileManager
     {
         /// <summary>
         /// Сохраняет переданные файлы на сервер в указанный каталог
@@ -17,7 +17,9 @@ namespace AppFeedBack.Utils
         /// <returns>Список полных имен сохраненный файлов</returns>
         public static IEnumerable<string> SaveFilesToServer(IEnumerable<HttpPostedFileBase> files, string rootPath, string path)
         {
-            if (files == null || !files.Any()) yield break;
+            var listFiles = files as IList<HttpPostedFileBase> ?? files.ToList();
+
+            if (files == null || !listFiles.Any()) yield break;
 
             string directory = Path.Combine(rootPath, path);
 
@@ -26,7 +28,7 @@ namespace AppFeedBack.Utils
                 Directory.CreateDirectory(directory);
             }
 
-            foreach (var file in files.Where(file => file != null))
+            foreach (var file in listFiles.Where(file => file != null))
             {
                 file.SaveAs(Path.Combine(directory, file.FileName));
                 yield return Path.Combine(path, file.FileName);
@@ -43,6 +45,21 @@ namespace AppFeedBack.Utils
             {
                 Directory.Delete(path, true);
             }       
+        }
+
+        /// <summary>
+        /// Вовращает файл по указанному пути в виде массива байт. Если файл не сущетсвует, вернет null
+        /// </summary>
+        /// <param name="path">Физический путь к файлу</param>
+        /// <returns></returns>
+        public static byte[] GetFile(string path)
+        {
+            if (File.Exists(path))
+            {
+                return File.ReadAllBytes(path);
+            }
+
+            return null;
         }
     }
 }
