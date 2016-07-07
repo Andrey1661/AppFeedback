@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // Управление общими сведениями о сборке осуществляется с помощью 
 // набора атрибутов. Измените значения этих атрибутов, чтобы изменить сведения,
 // связанные со сборкой.
-[assembly: AssemblyTitle("AppFeedBack.Domain.Tests")]
+[assembly: AssemblyTitle("AppFeedBack.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("AppFeedBack.Domain.Tests")]
+[assembly: AssemblyProduct("AppFeedBack.Tests")]
 [assembly: AssemblyCopyright("Copyright © Microsoft 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // Следующий GUID служит для идентификации библиотеки типов, если этот проект будет видимым для COM
-[assembly: Guid("e3e5770d-d1b2-474a-8729-0e38d0a16788")]
+[assembly: Guid("e3396e56-6840-4e36-90f6-d68f29d5c024")]
 
 // Сведения о версии сборки состоят из следующих четырех значений:
 //

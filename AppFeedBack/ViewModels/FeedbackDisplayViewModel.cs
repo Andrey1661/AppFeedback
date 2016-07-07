@@ -39,6 +39,6 @@ namespace AppFeedBack.ViewModels
         /// Пути к прикрепленным файлам
         /// </summary>
         [Display(Name = "Прикрепленные файлы")]
-        public IEnumerable<string> Files { get; set; } 
+        public IEnumerable<string> Files { get; set; }
     }
 }

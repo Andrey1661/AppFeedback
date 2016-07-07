@@ -22,19 +22,19 @@ namespace AppFeedBack
             routes.MapRoute(
                 name: "View",
                 url: "Feedback/View/",
-                defaults: new { controller = "FeedBack", action = "ViewFeedbacks" }
+                defaults: new { controller = "Admin", action = "ViewFeedbacks" }
                 );
 
             routes.MapRoute(
                 name: "Delete",
                 url: "Feedback/Delete",
-                defaults: new { controller = "FeedBack", action = "DeleteFeedback" }
+                defaults: new { controller = "Admin", action = "DeleteFeedback" }
                 );
 
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/",
-                defaults: new { controller = "FeedBack", action = "ViewFeedbacks" }
+                defaults: new { controller = "Feedback", action = "StoreFeedback" }
             );
         }
     }
