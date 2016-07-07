@@ -1,10 +1,9 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
 using System.Web;
-using AppFeedBack.Commands.Interfaces;
-using AppFeedBack.Domain.Repositories.Interfaces;
+using System.Web.Mvc;
 using AppFeedBack.Validation;
 
 namespace AppFeedBack.ViewModels
@@ -14,14 +13,8 @@ namespace AppFeedBack.ViewModels
     /// </summary>
     public class FeedbackStoreViewModel
     {
-        private readonly ICategoryListCreator _categoryCreator;
-        private readonly IFeedbackRepository _repository;
-
         public Guid? Id { get; set; }
 
-        /// <summary>
-        /// Указывает, что редактируется существующий отзыв
-        /// </summary>
         public bool EditMode { get; set; }
 
         /// <summary>
@@ -52,53 +45,5 @@ namespace AppFeedBack.ViewModels
         /// Список категорий для представления
         /// </summary>
         public IEnumerable<CategoryViewModel> Categories { get; set; }
-
-        public FeedbackStoreViewModel() { }
-
-        public FeedbackStoreViewModel(IFeedbackRepository repository, ICategoryListCreator categoryCreator)
-        {
-            _categoryCreator = categoryCreator;
-            _repository = repository;
-        }
-
-        /// <summary>
-        /// Инициализирует модель для создания отзыва. 
-        /// По умолчанию загружает в модель список категорий из базы
-        /// </summary>
-        /// <param name="loadCategories">Если true - загружает в модель спискок существующих категорий</param>
-        /// <returns></returns>
-        public async Task Initialize(bool loadCategories = true)
-        {
-            await Initialize(Guid.Empty, loadCategories);
-        }
-
-        /// <summary>
-        /// Инициализирует модель для редактирования отзыва на основе существующего. 
-        /// По умолчанию загружает в модель список категорий из базы. 
-        /// </summary>
-        /// <param name="id">id существующего отзыва</param>
-        /// <param name="loadCategories">Если true - загружает в модель спискок существующих категорий</param>
-        /// <returns></returns>
-        public async Task Initialize(Guid id, bool loadCategories = true)
-        {
-            if (_repository == null || _categoryCreator == null) return;
-
-            if (loadCategories)
-            {
-                Categories = await _categoryCreator.GetCategories("Не выбрана");
-            }
-
-            if (id == Guid.Empty) return;
-
-            var feedback = await _repository.Get(id);
-            
-            if (feedback != null)
-            {
-                EditMode = true;
-                Id = feedback.Id;
-                Text = feedback.Text;
-                CategoryId = feedback.CategoryId;
-            }
-        } 
     }
 }

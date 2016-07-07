@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using AppFeedBack.Domain.Entities;
 
-namespace AppFeedBack.Domain.Repositories.Interfaces
+namespace AppFeedBack.Domain.Interfaces
 {
-    public interface ICategoryRepository
+    interface ICategoryRepository : IRepository<Category>
     {
         Task<Category> Get(string name);
 
@@ -18,11 +18,5 @@ namespace AppFeedBack.Domain.Repositories.Interfaces
         Task<int> SetActive(Guid id, bool active);
 
         Task<int> Delete(string name);
-
-        Task<Category> Get(Guid id);
-
-        Task<IEnumerable<Category>> GetList();
-
-        Task<int> Delete(Guid id);
     }
 }

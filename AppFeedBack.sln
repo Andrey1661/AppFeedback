@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppFeedBack", "AppFeedBack\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppFeedBack.Domain", "AppFeedBack.Domain\AppFeedBack.Domain.csproj", "{0C01325D-E0F5-4E6D-8A54-1DC3578FA315}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppFeedBack.Tests", "AppFeedBack.Tests\AppFeedBack.Tests.csproj", "{7C14B959-F9FE-4FE3-9C0D-E964076C84ED}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppFeedBack.Domain.Tests", "AppFeedBack.Domain.Tests\AppFeedBack.Domain.Tests.csproj", "{F20E2659-1297-4984-931B-91F62FA5145B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{0C01325D-E0F5-4E6D-8A54-1DC3578FA315}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C01325D-E0F5-4E6D-8A54-1DC3578FA315}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C01325D-E0F5-4E6D-8A54-1DC3578FA315}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7C14B959-F9FE-4FE3-9C0D-E964076C84ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7C14B959-F9FE-4FE3-9C0D-E964076C84ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7C14B959-F9FE-4FE3-9C0D-E964076C84ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7C14B959-F9FE-4FE3-9C0D-E964076C84ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F20E2659-1297-4984-931B-91F62FA5145B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F20E2659-1297-4984-931B-91F62FA5145B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F20E2659-1297-4984-931B-91F62FA5145B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F20E2659-1297-4984-931B-91F62FA5145B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

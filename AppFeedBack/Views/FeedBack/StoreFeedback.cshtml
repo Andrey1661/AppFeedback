@@ -17,7 +17,6 @@
             
             @Html.HiddenFor(t => t.UserName)
             @Html.HiddenFor(t => t.Id)
-            @Html.HiddenFor(t => t.EditMode)
             
             <div class="form-horizontal">
                 @Html.ValidationSummary(true)
@@ -54,7 +53,7 @@
                 </div>
 
                 <div>
-                    @Html.ActionLink("К списку отзывов", "ViewFeedbacks", "Admin")
+                    @Html.ActionLink("К списку отзывов", "ViewFeedbacks")
                 </div>
 
             </div>

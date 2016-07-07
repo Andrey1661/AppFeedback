@@ -7,7 +7,7 @@
 <div class="row">
     <div class="col-md-10">
         <div class="form-inline">
-            @using (Html.BeginForm("ViewFeedbacks", "Admin", FormMethod.Get))
+            @using (Html.BeginForm("ViewFeedbacks", "FeedBack", FormMethod.Get))
             {
                 <div>
                     @Html.TextBox("author", Model.Author, new { @class = "form-control" })
@@ -67,13 +67,13 @@
                             <span>Файлы: </span>
                             @foreach (var file in item.Files)
                             {
-                                <span>@Html.ActionLink(Path.GetFileName(file), "Download", "Admin", new {path = file}, null)</span>
+                                <span>@Html.ActionLink(Path.GetFileName(file), "Download", "FeedBack", new {path = file}, null)</span>
                             }
                         </div>
 
                         <div class="link-block">
                             <span>@Html.ActionLink("Редактировать", "StoreFeedback", "FeedBack", new {id = item.Id}, null)</span>
-                            <span>@Html.ActionLink("Удалить", "DeleteFeedback", "Admin", new {id = item.Id}, new {onclick = "return confirm('Вы действительно хотите удалить этот отзыв?')"})</span>
+                            <span>@Html.ActionLink("Удалить", "DeleteFeedback", "FeedBack", new {id = item.Id}, new {onclick = "return confirm('Вы действительно хотите удалить этот отзыв?')"})</span>
                         </div>
                     </div>
                 }

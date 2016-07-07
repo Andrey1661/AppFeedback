@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using AppFeedBack.Domain.Entities;
-using AppFeedBack.Domain.Repositories.Interfaces;
+using AppFeedBack.Domain.Interfaces;
 
 namespace AppFeedBack.Domain.Repositories
 {
@@ -36,6 +37,34 @@ namespace AppFeedBack.Domain.Repositories
         }
 
         /// <summary>
+        /// Добавляет в базу переданную категорию
+        /// </summary>
+        /// <param name="item">Категория для доюалвения в базу</param>
+        /// <returns></returns>
+        public async Task<int> Insert(Category item)
+        {
+            using (var db = new FeedbackContext())
+            {
+                db.Categories.Add(item);
+                return await db.SaveChangesAsync();
+            }
+        }
+
+        /// <summary>
+        /// Обновляет в базе переданную категорию
+        /// </summary>
+        /// <param name="item">Категория для обновления</param>
+        /// <returns></returns>
+        public async Task<int> Update(Category item)
+        {
+            using (var db = new FeedbackContext())
+            {
+                db.Entry(item).State = EntityState.Modified;
+                return await db.SaveChangesAsync();
+            }
+        }
+
+        /// <summary>
         /// Удаляет категорию с указанным id
         /// </summary>
         /// <param name="id">id категории</param>
@@ -49,6 +78,25 @@ namespace AppFeedBack.Domain.Repositories
                 db.Categories.Remove(category);
 
                 return await db.SaveChangesAsync();
+            }
+        }
+
+        /// <summary>
+        /// Удаляет переданную категорию из базы
+        /// </summary>
+        /// <param name="item">Категория для удаления</param>
+        /// <returns></returns>
+        public async Task<int> Delete(Category item)
+        {
+            using (var db = new FeedbackContext())
+            {
+                if (db.Categories.Contains(item))
+                {
+                    db.Entry(item).State = EntityState.Deleted;
+                    return await db.SaveChangesAsync();
+                }
+
+                return -1;
             }
         }
 
