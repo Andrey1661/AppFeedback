@@ -1,0 +1,98 @@
+﻿@using AppFeedBack.Helpers
+@using AppFeedBack.ViewModels
+@model IndexViewModel
+
+<h2>Отзывы пользователей</h2>
+
+<div class="row">
+    <div class="col-md-10">
+        <div class="form-inline">
+            @using (Html.BeginForm("ViewFeedbacks", "Admin", FormMethod.Get))
+            {
+                <div>
+                    @Html.TextBox("author", Model.Author, new { @class = "form-control" })
+                    <input type="submit" class="btn btn-default" value="Поиск" />
+                </div>
+
+                var categorySelectList = from item in Model.CategoryList
+                                         select new SelectListItem { Text = item.Name, Value = item.Id == Guid.Empty ? "" : item.Name };
+
+                                        <div>
+                                            <div class="dropdown-block">
+                                                @Html.LabelFor(t => t.Category)
+                                                <div>
+                                                    @Html.DropDownList("category", categorySelectList, new { @class = "form-control " })
+                                                </div>
+                                            </div>
+                                            <div class="dropdown-block">
+                                                @Html.LabelFor(t => t.OrderBy)
+                                                <div>
+                                                    @Html.EnumDropDownListFor(t => t.OrderBy, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                        </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="row">
+
+    <div class="col-md-10">
+
+        <div class="feedback-wrapper">
+
+            @if (Model != null && Model.Feedbacks.Any())
+            {
+                foreach (var item in Model.Feedbacks)
+                {
+                    <div class="feedback-block">
+
+                        <div class="feedback-head-block">
+                            <div>
+                                <span>Автор: @Html.ActionLink(!string.IsNullOrWhiteSpace(item.Author) ? item.Author : "Не указан", "ViewFeedbacks", new { author = item.Author })</span>
+                            </div>
+
+                            <span>Отправлен: @Html.DisplayFor(t => item.PostDate)</span>
+                            <span>В категории: @Html.ActionLink(item.Category, "ViewFeedbacks", new { category = item.Category })</span>
+                        </div>
+
+                        <div class="feedback-text-block">
+                            <p class="text-justfy">
+                                @Html.DisplayFor(t => item.Text)
+                            </p>
+                        </div>
+
+                        <div class="file-block">
+                            <span>Файлы: </span>
+                            @foreach (var file in item.Files)
+                            {
+                                <span>@Html.ActionLink(Path.GetFileName(file), "Download", "Admin", new { path = file }, null)</span>
+                            }
+                        </div>
+
+                        <div class="link-block">
+                            <span>@Html.ActionLink("Редактировать", "StoreFeedback", "FeedBack", new { id = item.Id }, null)</span>
+                            <span>@Html.ActionLink("Удалить", "DeleteFeedback", "Admin", new { id = item.Id }, new { onclick = "return confirm('Вы действительно хотите удалить этот отзыв?')" })</span>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <h3>Ничего не найдено</h3>
+            }
+
+        </div>
+
+        <div>
+            @Html.ActionLink("Написать отзыв", "StoreFeedback", "FeedBack", null, new { @class = "btn-link" })
+        </div>
+
+        <div class="btn-group">
+            @Html.Pagination(Model.Feedbacks, page => Url.Action("ViewFeedbacks", new { page, author = Model.Author, category = Model.Category, orderby = Model.OrderBy }))
+        </div>
+
+    </div>
+
+</div>

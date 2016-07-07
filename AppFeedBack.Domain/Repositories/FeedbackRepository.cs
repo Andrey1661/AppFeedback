@@ -2,12 +2,9 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using AppFeedBack.Domain.Entities;
-using AppFeedBack.Domain.Interfaces;
-using PagedList;
-using PagedList.EntityFramework;
+using AppFeedBack.Domain.Repositories.Interfaces;
 
 namespace AppFeedBack.Domain.Repositories
 {
@@ -31,18 +28,6 @@ namespace AppFeedBack.Domain.Repositories
         }
 
         /// <summary>
-        /// Возвращает список всех отзывов
-        /// </summary>
-        /// <returns></returns>
-        public async Task<IEnumerable<Feedback>> GetList()
-        {
-            using (var db = new FeedbackContext())
-            {
-                return await db.Feedbacks.ToListAsync();
-            }
-        } 
-
-        /// <summary>
         /// Возвращает запрос на список отзывов, соответствующих указанным фильтрам
         /// </summary>
         /// <param name="author">Фильтр по автору отзыва</param>
@@ -51,7 +36,7 @@ namespace AppFeedBack.Domain.Repositories
         /// <param name="page">Текущая страница выдачи</param>
         /// <param name="pageSize">Количество элементов на страницу</param>
         /// <returns></returns>
-        public async Task<PagedList<Feedback>> GetPagedList(string author, string category, FeedbackOrderBy order, int page, int pageSize)
+        public async Task<IPagedList<Feedback>> GetPagedList(string author, string category, FeedbackOrderBy order, int page, int pageSize)
         {
             using (var db = new FeedbackContext())
             {
@@ -91,18 +76,6 @@ namespace AppFeedBack.Domain.Repositories
         }
 
         /// <summary>
-        /// Возвращает запрос на список всех категорий в базе
-        /// </summary>
-        /// <returns></returns>
-        public async Task<IEnumerable<Category>> GetCategories()
-        {
-            using (var db = new FeedbackContext())
-            {
-                return await db.Categories.ToListAsync();
-            }
-        }
-
-        /// <summary>
         /// Удаляет отзыв с заданным id
         /// </summary>
         /// <param name="id"></param>
@@ -116,25 +89,6 @@ namespace AppFeedBack.Domain.Repositories
                 return await db.SaveChangesAsync();
             }
         }
-
-        /// <summary>
-        /// Удаляет переданный отзыв
-        /// </summary>
-        /// <param name="item">Отзыв для удаления</param>
-        /// <returns></returns>
-        public async Task<int> Delete(Feedback item)
-        {
-            using (var db = new FeedbackContext())
-            {
-                if (db.Feedbacks.Contains(item))
-                {
-                    db.Entry(item).State = EntityState.Deleted;
-                    return await db.SaveChangesAsync();
-                }
-
-                return -1;
-            }
-        } 
 
         /// <summary>
         /// Добавляет в базу новый отзыв с указанными данными
@@ -177,34 +131,6 @@ namespace AppFeedBack.Domain.Repositories
 
                 return await db.SaveChangesAsync();
             }  
-        }
-
-        /// <summary>
-        /// Добавляет в базу готовый отзыв
-        /// </summary>
-        /// <param name="item">Отзыв для добавления</param>
-        /// <returns></returns>
-        public async Task<int> Insert(Feedback item)
-        {
-            using (var db = new FeedbackContext())
-            {
-                db.Feedbacks.Add(item);
-                return await db.SaveChangesAsync();
-            }
-        }
-
-        /// <summary>
-        /// Обновляет переданный отзыв в базе
-        /// </summary>
-        /// <param name="item">Отзыв для обновления</param>
-        /// <returns></returns>
-        public async Task<int> Update(Feedback item)
-        {
-            using (var db = new FeedbackContext())
-            {
-                db.Entry(item).State = EntityState.Modified;
-                return await db.SaveChangesAsync();
-            }
         }
     }
 }

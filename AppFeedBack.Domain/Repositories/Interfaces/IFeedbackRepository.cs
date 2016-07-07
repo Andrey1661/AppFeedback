@@ -5,14 +5,18 @@ using System.Text;
 using System.Threading.Tasks;
 using AppFeedBack.Domain.Entities;
 
-namespace AppFeedBack.Domain.Interfaces
+namespace AppFeedBack.Domain.Repositories.Interfaces
 {
-    public interface IFeedbackRepository : IRepository<Feedback>
+    public interface IFeedbackRepository
     {
-        Task<PagedList<Feedback>> GetPagedList(string author, string category, FeedbackOrderBy order, int page, int pageSize);
+        Task<IPagedList<Feedback>> GetPagedList(string author, string category, FeedbackOrderBy order, int page, int pageSize);
 
         Task<int> Insert(Guid id, Guid categoryId, string text, string userName = "", IEnumerable<string> files = null);
 
         Task<int> Update(Guid id, string text);
+
+        Task<Feedback> Get(Guid id);
+
+        Task<int> Delete(Guid id);
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AppFeedBack.Domain
 {
-    public class PagedList<T> : List<T>
+    public class PagedList<T> : List<T>, IPagedList<T>
     {
         public int TotalItems { get; set; }
         public int Page { get; set; }

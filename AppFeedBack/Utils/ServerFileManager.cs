@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
 
 namespace AppFeedBack.Utils
 {
-    public class ServerFileManager
+    public class ServerFileManager : IServerFileManager
     {
         /// <summary>
         /// Сохраняет переданные файлы на сервер в указанный каталог
@@ -15,9 +14,9 @@ namespace AppFeedBack.Utils
         /// <param name="rootPath">Каталог, где будут созданы подкаталоги для сохранения файлов</param>
         /// <param name="path">Каталог для сохранения</param>
         /// <returns>Список полных имен сохраненный файлов</returns>
-        public static IEnumerable<string> SaveFilesToServer(IEnumerable<HttpPostedFileBase> files, string rootPath, string path)
+        public IEnumerable<string> SaveFilesToServer(IEnumerable<HttpPostedFileBase> files, string rootPath, string path)
         {
-            var listFiles = files as IList<HttpPostedFileBase> ?? files.ToList();
+            var listFiles = files != null ? files.ToList() : null;
 
             if (files == null || !listFiles.Any()) yield break;
 
@@ -39,7 +38,7 @@ namespace AppFeedBack.Utils
         /// Удаляет каталог и все файлы в нем
         /// </summary>
         /// <param name="path">Путь к каталогу</param>
-        public static void DeleteAttachedFiles(string path)
+        public void DeleteAttachedFiles(string path)
         {
             if (Directory.Exists(path))
             {
@@ -52,7 +51,7 @@ namespace AppFeedBack.Utils
         /// </summary>
         /// <param name="path">Физический путь к файлу</param>
         /// <returns></returns>
-        public static byte[] GetFile(string path)
+        public byte[] GetFile(string path)
         {
             if (File.Exists(path))
             {

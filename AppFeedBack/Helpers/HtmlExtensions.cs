@@ -38,7 +38,7 @@ namespace AppFeedBack.Helpers
             return tag;
         }
 
-        public static MvcHtmlString Pagination<T>(this HtmlHelper html, PagedList<T> list, Func<int, string> pageUrl)
+        public static MvcHtmlString Pagination<T>(this HtmlHelper html, IPagedList<T> list, Func<int, string> pageUrl)
         {
             var result = new StringBuilder();            
 
