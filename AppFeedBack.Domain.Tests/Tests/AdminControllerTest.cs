@@ -54,10 +54,25 @@ namespace AppFeedBack.Domain.Tests.Tests
             var result = controller.ViewFeedbacks("user1", "", 1).Result;
             var model = ((ViewResult)result).Model;
 
-            var values = (model as IndexViewModel).Feedbacks.Select(t => t.Author).Distinct();
-
-            Assert.That(values.Count() == 1);
+            var values = (model as IndexViewModel).Feedbacks.Select(t => t.Author).Distinct().ToList();
+            Assert.That(values.Count == 1);
             Assert.That(values.First() == "user1");
+        }
+
+        [Test]
+        public void ViewFeedbacks_CategoryFilterTest()
+        {
+            var controller = DependencyResolver.Current.GetService<AdminController>();
+
+            var category = MockCategoryRepository.Categories.First();
+
+            var result = controller.ViewFeedbacks("", category.Id.ToString(), 1).Result;
+            var model = ((ViewResult)result).Model;
+
+            var values = (model as IndexViewModel).Feedbacks.Select(t => t.Category).Distinct().ToList();
+
+            Assert.That(values.Count == 1);
+            Assert.That(values.First() == category.Name);
         }
     }
 }

@@ -9,16 +9,16 @@ using Moq;
 
 namespace AppFeedBack.Domain.Tests.Mocks
 {
-    class MockFeedbackCategoryRepository : Mock<ICategoryRepository>
+    class MockCategoryRepository : Mock<ICategoryRepository>
     {
-        private static List<Category> Categories { get; set; }
+        public static List<Category> Categories { get; set; }
 
-        static MockFeedbackCategoryRepository()
+        static MockCategoryRepository()
         {
             CreateCategories();
         }
 
-        internal MockFeedbackCategoryRepository()
+        public MockCategoryRepository()
         {
             Setup(p => p.Get(It.IsAny<Guid>()))
                 .Returns((Guid id) => Task.FromResult(Categories.FirstOrDefault(t => t.Id == id)));

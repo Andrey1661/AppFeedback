@@ -14,7 +14,7 @@ namespace AppFeedBack.Domain.Tests.Mocks
     {
         private FeedbackStoreViewModel _model;
 
-        internal MockFeedbackStoreCommand()
+        public MockFeedbackStoreCommand()
         {
             Setup(p => p.LoadData(It.IsAny<FeedbackStoreViewModel>(), It.IsAny<string>())).Callback((FeedbackStoreViewModel model, string path) =>
             {

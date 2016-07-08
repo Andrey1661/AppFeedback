@@ -5,19 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using AppFeedBack.Commands;
-using AppFeedBack.Commands.Interfaces;
 using AppFeedBack.Domain.Repositories.Interfaces;
 using AppFeedBack.Domain.Tests.Mocks;
 using AppFeedBack.Utils;
-using AppFeedBack.ViewModels;
-using Moq;
 using Ninject;
 using NUnit.Framework;
 
 namespace AppFeedBack.Domain.Tests.Tests
 {
     [TestFixture]
-    public class FeedbackStoreCommandTest
+    public class FeedbackDeleteCommandTest
     {
         [SetUp]
         public void SetUp()
@@ -36,27 +33,15 @@ namespace AppFeedBack.Domain.Tests.Tests
         [Test]
         public void Execute_Test()
         {
-            var command = DependencyResolver.Current.GetService<FeedbackStoreCommand>();
+            var command = DependencyResolver.Current.GetService<FeedbackDeleteCommand>();
+            var feedback = MockFeedbackRepository.Feedbacks.First();
 
-            Guid id = Guid.NewGuid();
-            string user = "test";
-            string text = "test-text";
-
-            var model = new FeedbackStoreViewModel
-            {
-                Id = id,
-                CategoryId = Guid.Empty,
-                UserName = user,
-                Text = text
-            };
-
-            command.LoadData(model, string.Empty);
+            command.LoadData(feedback.Id, string.Empty);
             command.Execute();
-            var lastAdded = MockFeedbackRepository.Feedbacks.Last();
+            var first = MockFeedbackRepository.Feedbacks.First();
 
-            Assert.AreEqual(id, lastAdded.Id);
-            Assert.AreEqual(user, lastAdded.UserName);
-            Assert.AreEqual(text, lastAdded.Text);
+            Assert.AreEqual(4, MockFeedbackRepository.Feedbacks.Count);
+            Assert.AreNotEqual(feedback, first);
         }
     }
 }

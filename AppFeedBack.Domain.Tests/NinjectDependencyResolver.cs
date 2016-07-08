@@ -8,7 +8,7 @@ using Ninject;
 
 namespace AppFeedBack.Domain.Tests
 {
-    class NinjectDependencyResolver : IDependencyResolver
+    public class NinjectDependencyResolver : IDependencyResolver
     {
         private readonly IKernel _kernel;
 

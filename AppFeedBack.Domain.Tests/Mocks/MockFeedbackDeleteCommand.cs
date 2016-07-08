@@ -10,7 +10,7 @@ namespace AppFeedBack.Domain.Tests.Mocks
 {
     class MockFeedbackDeleteCommand : Mock<IFeedbackDeleteCommand>
     {
-        internal MockFeedbackDeleteCommand()
+        public MockFeedbackDeleteCommand()
         {
             
         }

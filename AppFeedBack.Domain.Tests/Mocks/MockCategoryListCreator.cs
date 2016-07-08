@@ -9,9 +9,9 @@ using Moq;
 
 namespace AppFeedBack.Domain.Tests.Mocks
 {
-    class MockCategoryListCreator : Mock<ICategoryListCreator>
+    public class MockCategoryListCreator : Mock<ICategoryListCreator>
     {
-        internal MockCategoryListCreator()
+        public MockCategoryListCreator()
         {
             Setup(p => p.GetCategories(It.IsAny<string>()))
                 .Returns((string t) => Task.FromResult(FakeCategoriesList(t)));

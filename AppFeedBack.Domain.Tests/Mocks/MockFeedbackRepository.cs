@@ -19,41 +19,55 @@ namespace AppFeedBack.Domain.Tests.Mocks
             CreateFeedbacks();
         }
 
-        internal MockFeedbackRepository()
+        public MockFeedbackRepository()
         {
             CreateFeedbacks();
 
             Setup(p => p.Get(It.IsAny<Guid>())).Returns((Guid id) => Task.FromResult(GetFeedback(id)));
+
             Setup(p => p.Delete(It.IsAny<Guid>())).Callback((Guid id) => DeleteFeedback(id));
+
             Setup(
                 p =>
-                    p.GetPagedList(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<FeedbackOrderBy>(), It.IsAny<int>(),
+                    p.GetPagedList(It.IsAny<string>(), It.Is<string>(t => t == string.Empty), It.IsAny<FeedbackOrderBy>(), It.IsAny<int>(),
                         It.IsAny<int>()))
                 .Returns(
-                    (string a, string b, FeedbackOrderBy o, int page, int pageSize) =>
-                        Task.FromResult(GetPagedList(page, pageSize)));
+                    (string user, string b, FeedbackOrderBy o, int page, int pageSize) =>
+                        Task.FromResult(GetPagedList(Feedbacks.Where(t => t.UserName.Contains(user)), page, pageSize)));
+
+            Setup(
+                p =>
+                    p.GetPagedList(It.Is<string>(t => t == string.Empty), It.IsAny<string>(), It.IsAny<FeedbackOrderBy>(), It.IsAny<int>(),
+                        It.IsAny<int>()))
+                .Returns(
+                    (string a, string category, FeedbackOrderBy o, int page, int pageSize) =>
+                        Task.FromResult(GetPagedList(Feedbacks.Where(t => t.Category.Name == category), page, pageSize)));
+
             Setup(p => p.Insert(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), null))
-                .Returns((Guid id, Guid categoryid, string text, string name, IEnumerable<string> file) =>
-                {
-                    Feedbacks.Add(new Feedback(id, categoryid, text, DateTime.Now, name));
-                    return null;
-                });
+                .Callback(
+                    (Guid id, Guid categoryid, string text, string name, IEnumerable<string> file) =>
+                        Insert(id, categoryid, text, name));
+        }
+
+        private static void Insert(Guid id, Guid categoryid, string text, string name)
+        {
+            Feedbacks.Add(new Feedback(id, categoryid, text, DateTime.Now, name));
         }
 
         private Feedback GetFeedback(Guid id)
         {
-            return Feedbacks.FirstOrDefault(t => t.Id == id);
+            return new Feedback {Id = id};
         }
 
-        private void DeleteFeedback(Guid id)
+        private static void DeleteFeedback(Guid id)
         {
             Feedbacks.Remove(Feedbacks.FirstOrDefault(t => t.Id == id));
         }
 
-        private IPagedList<Feedback> GetPagedList(int page, int pageSize)
+        private IPagedList<Feedback> GetPagedList(IEnumerable<Feedback> superset , int page, int pageSize)
         {
-            var set = Feedbacks.Skip((page - 1)*pageSize).Take(pageSize);
-            return new PagedList<Feedback>(set, 1, 1, Feedbacks.Count);
+            superset = Feedbacks.Skip((page - 1) * pageSize).Take(pageSize);
+            return new PagedList<Feedback>(superset, 1, 1, Feedbacks.Count);
         }
 
         private static void CreateFeedbacks()
@@ -65,7 +79,7 @@ namespace AppFeedBack.Domain.Tests.Mocks
                     Id = Guid.NewGuid(),
                     Text = "text1",
                     PostDate = DateTime.Now,
-                    UserName = "user1",
+                    UserName = "user4",
                     Category = new Category{Name = "кат1"}
                 },
                 new Feedback
@@ -80,7 +94,7 @@ namespace AppFeedBack.Domain.Tests.Mocks
                     Id = Guid.NewGuid(),
                     Text = "text3",
                     PostDate = DateTime.Now,
-                    UserName = "user1",
+                    UserName = "user3",
                     Category = new Category{Name = "кат3"}
                 },
                 new Feedback

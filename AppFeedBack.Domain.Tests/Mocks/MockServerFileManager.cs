@@ -12,7 +12,7 @@ namespace AppFeedBack.Domain.Tests.Mocks
 {
     class MockServerFileManager : Mock<IServerFileManager>
     {
-        internal MockServerFileManager()
+        public MockServerFileManager()
         {
             Setup(
                 p =>
