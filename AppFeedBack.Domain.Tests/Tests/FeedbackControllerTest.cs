@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 using AppFeedBack.Commands.Interfaces;
 using AppFeedBack.Controllers;
@@ -11,7 +12,7 @@ using NUnit.Framework;
 namespace AppFeedBack.Domain.Tests.Tests
 {
     [TestFixture]
-    class FeedbackControllerTest
+    public class FeedbackControllerTest
     {
         [SetUp]
         public void SetUp()
@@ -29,7 +30,7 @@ namespace AppFeedBack.Domain.Tests.Tests
         }
 
         [Test]
-        public void StoreFeedbackTest()
+        public void StoreFeedback_modelCreateTest()
         {
             var controller = DependencyResolver.Current.GetService<FeedbackController>();
             var guid = Guid.NewGuid();
@@ -38,6 +39,7 @@ namespace AppFeedBack.Domain.Tests.Tests
             var model = ((ViewResult) result).Model;
             Assert.IsInstanceOf<FeedbackStoreViewModel>(model);
             Assert.AreEqual(guid, (model as FeedbackStoreViewModel).Id);
+            Assert.Contains("Не выбрана", (model as FeedbackStoreViewModel).Categories.Select(t => t.Name).ToList());
         }
     }
 }

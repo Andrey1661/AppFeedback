@@ -40,15 +40,15 @@ namespace AppFeedBack.Domain.Repositories
         /// </summary>
         /// <param name="id">id категории</param>
         /// <returns></returns>
-        public async Task<int> Delete(Guid id)
+        public async Task Delete(Guid id)
         {
             using (var db = new FeedbackContext())
             {
                 var category = await db.Categories.FindAsync(id);
-                if (category == null) return -1;
+                if (category == null) return;
                 db.Categories.Remove(category);
 
-                return await db.SaveChangesAsync();
+                await db.SaveChangesAsync();
             }
         }
 
@@ -83,7 +83,7 @@ namespace AppFeedBack.Domain.Repositories
         /// <param name="name">Имя категории</param>
         /// <param name="isActive">Активность категории</param>
         /// <returns></returns>
-        public async Task<int> Insert(string name, bool isActive)
+        public async Task Insert(string name, bool isActive)
         {
             using (var db = new FeedbackContext())
             {
@@ -94,7 +94,7 @@ namespace AppFeedBack.Domain.Repositories
                 };
 
                 db.Categories.Add(category);
-                return await db.SaveChangesAsync();
+                await db.SaveChangesAsync();
             }
         }
 
@@ -104,15 +104,15 @@ namespace AppFeedBack.Domain.Repositories
         /// <param name="id">id категории</param>
         /// <param name="active">Активность</param>
         /// <returns></returns>
-        public async Task<int>SetActive(Guid id, bool active)
+        public async Task SetActive(Guid id, bool active)
         {
             using (var db = new FeedbackContext())
             {
                 var category = await db.Categories.FindAsync(id);
-                if (category == null) return -1;
+                if (category == null) return;
                 category.IsActive = active;
 
-                return await db.SaveChangesAsync();
+                await db.SaveChangesAsync();
             }
         }
 
@@ -121,15 +121,15 @@ namespace AppFeedBack.Domain.Repositories
         /// </summary>
         /// <param name="name">Имя категории</param>
         /// <returns></returns>
-        public async Task<int> Delete(string name)
+        public async Task Delete(string name)
         {
             using (var db = new FeedbackContext())
             {
                 var category = await db.Categories.FirstOrDefaultAsync(t => t.Name == name);
-                if (category == null) return -1;
+                if (category == null) return;
                 category.Name = name;
 
-                return await db.SaveChangesAsync();
+                await db.SaveChangesAsync();
             }
         }
     }

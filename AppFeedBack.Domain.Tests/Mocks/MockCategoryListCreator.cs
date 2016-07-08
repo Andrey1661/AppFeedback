@@ -11,7 +11,7 @@ namespace AppFeedBack.Domain.Tests.Mocks
 {
     class MockCategoryListCreator : Mock<ICategoryListCreator>
     {
-        public MockCategoryListCreator()
+        internal MockCategoryListCreator()
         {
             Setup(p => p.GetCategories(It.IsAny<string>()))
                 .Returns((string t) => Task.FromResult(FakeCategoriesList(t)));

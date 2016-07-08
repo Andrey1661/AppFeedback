@@ -13,16 +13,16 @@ namespace AppFeedBack.Domain.Repositories.Interfaces
 
         Task<IEnumerable<Category>> GetActive();
 
-        Task<int> Insert(string name, bool isActive);
+        Task Insert(string name, bool isActive);
 
-        Task<int> SetActive(Guid id, bool active);
+        Task SetActive(Guid id, bool active);
 
-        Task<int> Delete(string name);
+        Task Delete(string name);
 
         Task<Category> Get(Guid id);
 
         Task<IEnumerable<Category>> GetList();
 
-        Task<int> Delete(Guid id);
+        Task Delete(Guid id);
     }
 }

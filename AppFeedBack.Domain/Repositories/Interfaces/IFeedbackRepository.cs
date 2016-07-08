@@ -11,12 +11,12 @@ namespace AppFeedBack.Domain.Repositories.Interfaces
     {
         Task<IPagedList<Feedback>> GetPagedList(string author, string category, FeedbackOrderBy order, int page, int pageSize);
 
-        Task<int> Insert(Guid id, Guid categoryId, string text, string userName = "", IEnumerable<string> files = null);
+        Task Insert(Guid id, Guid categoryId, string text, string userName = "", IEnumerable<string> files = null);
 
-        Task<int> Update(Guid id, string text);
+        Task Update(Guid id, string text);
 
         Task<Feedback> Get(Guid id);
 
-        Task<int> Delete(Guid id);
+        Task Delete(Guid id);
     }
 }

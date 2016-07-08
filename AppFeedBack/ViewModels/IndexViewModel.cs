@@ -34,8 +34,6 @@ namespace AppFeedBack.ViewModels
         {
             _repository = repository;
             _categoryCreator = categoryCreator;
-
-            OrderBy = FeedbackOrderBy.Date;
         }
 
         /// <summary>
@@ -48,7 +46,7 @@ namespace AppFeedBack.ViewModels
         /// <returns></returns>
         public async Task Initialize(string author, string category, FeedbackOrderBy orderBy, int page)
         {
-            Feedbacks = await GetFeedbackPagedList(author, category, orderBy, page, pageSize);
+            Feedbacks = await GetFeedbackPagedList(author, category, orderBy, page);
             CategoryList = await _categoryCreator.GetCategories("Все категории");
             Author = author;
             Category = category;
@@ -65,7 +63,7 @@ namespace AppFeedBack.ViewModels
         /// <param name="page">Задает страницу выдачи</param>
         /// <param name="pageSize">Задает количество элементов на страницу</param>
         /// <returns></returns>
-        private async Task<PagedList<FeedbackDisplayViewModel>> GetFeedbackPagedList(string author, string category, FeedbackOrderBy order, int page, int pageSize)
+        private async Task<PagedList<FeedbackDisplayViewModel>> GetFeedbackPagedList(string author, string category, FeedbackOrderBy order, int page)
         {
             var result = await _repository.GetPagedList(author, category, order, page, pageSize);
 

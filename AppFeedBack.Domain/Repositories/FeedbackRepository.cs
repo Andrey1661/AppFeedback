@@ -80,13 +80,13 @@ namespace AppFeedBack.Domain.Repositories
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<int> Delete(Guid id)
+        public async Task Delete(Guid id)
         {
             using (var db = new FeedbackContext())
             {
                 var feedback = await db.Feedbacks.FindAsync(id);
                 db.Feedbacks.Remove(feedback);
-                return await db.SaveChangesAsync();
+                await db.SaveChangesAsync();
             }
         }
 
@@ -99,7 +99,7 @@ namespace AppFeedBack.Domain.Repositories
         /// <param name="userName">Имя автора</param>
         /// <param name="files">Список путей к прикрепленным файлам</param>
         /// <returns></returns>
-        public async Task<int> Insert(Guid id, Guid categoryId, string text, string userName = "", IEnumerable<string> files = null)
+        public async Task Insert(Guid id, Guid categoryId, string text, string userName = "", IEnumerable<string> files = null)
         {
             using (var db = new FeedbackContext())
             {
@@ -111,7 +111,7 @@ namespace AppFeedBack.Domain.Repositories
                 }
 
                 db.Feedbacks.Add(feedback);
-                return await db.SaveChangesAsync();
+                await db.SaveChangesAsync();
             }    
         }
 
@@ -121,7 +121,7 @@ namespace AppFeedBack.Domain.Repositories
         /// <param name="id">id отзыва</param>
         /// <param name="text">Новый текст</param>
         /// <returns></returns>
-        public async Task<int> Update(Guid id, string text)
+        public async Task Update(Guid id, string text)
         {
             using (var db = new FeedbackContext())
             {
@@ -129,7 +129,7 @@ namespace AppFeedBack.Domain.Repositories
                 feedback.Text = text;
                 db.Entry(feedback).State = EntityState.Modified;
 
-                return await db.SaveChangesAsync();
+                await db.SaveChangesAsync();
             }  
         }
     }

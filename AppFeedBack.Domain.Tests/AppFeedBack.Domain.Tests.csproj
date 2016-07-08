@@ -90,13 +90,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\NinjectWebCommon.cs" />
+    <Compile Include="Mocks\MockFeedbackCategoryRepository.cs" />
+    <Compile Include="Mocks\MockFeedbackDeleteCommand.cs" />
     <Compile Include="Mocks\MockFeedbackRepository.cs" />
     <Compile Include="Mocks\MockCategoryListCreator.cs" />
     <Compile Include="Mocks\MockFeedbackStoreCommand.cs" />
+    <Compile Include="Mocks\MockServerFileManager.cs" />
     <Compile Include="NinjectDependencyResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tests\AdminControllerTest.cs" />
     <Compile Include="Tests\FeedbackControllerTest.cs" />
+    <Compile Include="Tests\FeedbackStoreCommandTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AppFeedBack.Domain\AppFeedBack.Domain.csproj">
