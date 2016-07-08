@@ -22,11 +22,15 @@ $(document).ready(function() {
                 box.append(input);
                 fileIndex++;
                 addFilePreview(file, input);
+                validateFiles();
             }           
         });
 
         input.click();
+    });
 
+    $("form").submit(function(event) {
+        validateFiles(event);
     });
 });
 
@@ -35,7 +39,7 @@ function validateFile(file) {
     var box = $("#file-validation-box");
     var inputs = $("input[type=file]");
 
-    box.empty();
+    $("#file-validation-message").remove();
     var msg = $("<span id ='file-validation-message' class = 'text-danger'>");
 
     //true, если файл с таким именем уже добавлен
@@ -56,7 +60,9 @@ function validateFile(file) {
         bigsize = true;
     }
 
-    if (!(bigsize || exists)) return true;
+    if (!(bigsize || exists)) {
+         return true;
+    }
 
     box.append(msg);
 
@@ -72,7 +78,7 @@ function validateFile(file) {
 }
 
 //Проверяет все прикрепленные файлы на превышения максимально допустимого суммарного размера (15МБ)
-function validateFiles() {
+function validateFiles(event) {
     var inputs = $("input[type=file]");
 
     var totalSize = 0;
@@ -82,12 +88,18 @@ function validateFiles() {
         totalSize += inputs[i].files[0].size;
     }
 
-    if (totalSize > maxSize) {
-        var box = $("#file-validation-box");
-        box.empty();
-        var msg = $("<span id ='file-validation-message' class = 'text-danger'>");
+    $("#file-validation-message-summary").remove();
 
-        msg.html("Общий объем передаваемых файлов не должен превышать 15МБ");
+    if (totalSize > maxSize) {
+        if (event !== undefined) {
+            event.preventDefault();
+        }
+        var msg = $("<span id ='file-validation-message-summary' class = 'text-danger'>");
+        var box = $("#file-validation-box");
+
+        var sizeStr = (maxSize / 1000000).toFixed(0) + "МБ";
+        msg.html("Общий объем передаваемых файлов не должен превышать " + sizeStr);
+        box.append(msg);
     }
 }
 
@@ -102,6 +114,7 @@ function resetFileInputs() {
         fileIndex++;
     }
 
+    validateFiles();
 };
 
 //При добавлении файла создает preview с именем и рамером этого файла
